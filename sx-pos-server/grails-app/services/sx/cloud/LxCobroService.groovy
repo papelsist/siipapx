@@ -3,6 +3,7 @@ package sx.cloud
 import javax.annotation.Nullable
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
+
 import groovy.transform.CompileDynamic
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
@@ -30,7 +31,7 @@ import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 
 import grails.gorm.transactions.Transactional
-
+import grails.util.Environment
 
 
 import sx.core.AppConfig
