@@ -2,7 +2,7 @@
 grails:
     profile: rest-api
     codegen:
-        defaultPackage: pos.server
+        defaultPackage: pos.papws.api
     spring:
         transactionManagement:
             proxies: false
@@ -81,12 +81,8 @@ environments:
         dataSource:
             dbCreate: none
             url: jdbc:mysql://localhost:3306/siipapx_pos?autoReconnect=true&useSSL=false
-            #url: jdbc:mysql://localhost:3306/siipapx_tacuba?autoReconnect=true
             username: root
             password: sys2
-        firebase:
-            url: https://siipapx-436ce.firebaseio.com
-            bucket: siipapx-436ce.appspot.com
     test:
         dataSource:
             dbCreate: create-drop
@@ -121,7 +117,6 @@ environments:
     certificacion:
         dataSource:
             dbCreate: update
-            #url: jdbc:mysql://10.10.1.229:3306/siipapx_tacuba?autoReconnect=true
             url: jdbc:mysql://${JDBC_CONNECTION_STRING}?autoReconnect=true
             username: root
             password: sys
@@ -153,24 +148,10 @@ grails:
     cors:
         enabled: true
 ---
+papws:
+    sucursal: ${PAPWS_SUCURSAL}
 siipapx:
     firebase:
         projectId: siipapx-436ce
         url: https://siipapx-436ce.firebaseio.com
         bucket: siipapx-436ce.appspot.com
-# environments:
-#     development:
-#         siipapx:
-#             firebase:
-#                 url: https://siipapx-436ce.firebaseio.com
-#                 bucket: siipapx-436ce.appspot.com
-#     production:
-#             siipapx:
-#                 firebase:
-#                 url: https://siipapx-436ce.firebaseio.com
-#                 bucket: siipapx-436ce.appspot.com
-#     certificacion:
-#             siipapx:
-#                 firebase:
-#                 url: https://siipapx-436ce.firebaseio.com
-#                 bucket: siipapx-436ce.appspot.com

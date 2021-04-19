@@ -1,6 +1,7 @@
 package sx.cloud
 
-
+import groovy.transform.TypeChecked
+import groovy.transform.TypeCheckingMode
 import groovy.util.logging.Slf4j
 
 import org.springframework.scheduling.annotation.Scheduled
@@ -21,7 +22,6 @@ import sx.core.Cliente
 import sx.audit.Audit
 
 @Slf4j
-@GrailsCompileStatic
 @Transactional
 class LxClienteService {
 
@@ -45,17 +45,8 @@ class LxClienteService {
     CollectionReference getCollection() {
         return firebaseService.getFirestore().collection(collectionName)
     }
-
-    /*
-    @Transactional(readOnly = true)
-    List<LxProducto> findAllProductos() {
-        return  Producto.list(fetch: [linea: 'join', marca: 'join', clase: 'join', productoSat: 'join', unidadSat:'join'], 
-            sort: 'clave', order: 'asc', max: 5000)
-            .collect { Producto prod -> new LxProducto(prod)}
-    }
-    */
     
-
+    @GrailsCompileStatic(TypeCheckingMode.SKIP)
     Audit logAudit(String id, String event, String message, int registros, Date updateTime = null) {
         Audit.withNewSession {
             Audit alog = new Audit(

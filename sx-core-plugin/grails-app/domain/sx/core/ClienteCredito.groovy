@@ -39,6 +39,7 @@ class ClienteCredito {
 
     Long sw2
 
+    Cliente cliente
 
     static constraints = {
         cobrador nullable:true

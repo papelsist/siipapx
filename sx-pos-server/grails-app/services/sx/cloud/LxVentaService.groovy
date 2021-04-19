@@ -376,7 +376,6 @@ class LxVentaService implements ApplicationListener<ContextRefreshedEvent>, Even
         .whereEqualTo('sucursal', suc.nombre)
         .whereEqualTo('status', 'CERRADO')
         .addSnapshotListener(this)
-        println "Listening to firestore collection: pedidos'"
         log.debug('Listening to firestore collection: {}', 'pedidos')
     }   
 

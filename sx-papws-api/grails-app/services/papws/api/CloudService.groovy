@@ -1,5 +1,4 @@
-package sx.cloud.papws
-
+package papws.api
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
@@ -23,9 +22,8 @@ import com.google.firebase.messaging.FirebaseMessaging
 
 @Slf4j
 @CompileStatic
-class PapelsaCloudService {
+class CloudService {
 
-  
   private FirebaseApp papelws
 
   @PostConstruct()
@@ -38,13 +36,15 @@ class PapelsaCloudService {
     }
     File file = new File(dirPath, fileName)
     FileInputStream serviceAccount = new FileInputStream(file);
-    log.debug('Inicializando Firebase services para PapelWS' )
-
-    FirebaseOptions options = FirebaseOptions.builder()
-    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-    .build()
-
-    this.papelws = FirebaseApp.initializeApp(options, 'papelws')
+    log.debug('Inicializando Firebase services para PapelWS Credentials: {}', file.path )
+    try {
+      FirebaseOptions options = FirebaseOptions.builder()
+        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+        .build()
+      this.papelws = FirebaseApp.initializeApp(options, 'papelws')
+    } catch( Exception ex) {
+      log.error(ex.message, ex)
+    }
   }
 
   Firestore getFirestore() {
@@ -56,12 +56,12 @@ class PapelsaCloudService {
   }
 
   /**
-  * Registra errores en Firestore
-  */
+   * Registra errores en Firestore
+   */
   void logError(Map payload) {
     try {
       log.info('Registrando error en Firebase {}', payload)
-      
+
       ApiFuture<WriteResult> result = getFirestore()
         .collection('errors')
         .document()
@@ -73,7 +73,7 @@ class PapelsaCloudService {
       log.error('No se pudo regisrar el error en Firebase message: {}', ex.message);
     }
   }
-  
+
 
   @PreDestroy()
   void close() {
