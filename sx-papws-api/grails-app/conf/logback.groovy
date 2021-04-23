@@ -33,7 +33,7 @@ appender('FIREBASE', RollingFileAppender) {
             '%m%n%wex' // Message
     }
     rollingPolicy(TimeBasedRollingPolicy) {
-        fileNamePattern = "${HOME_DIR}/logs/firebase-%d{yyyy-MM-dd}.log"
+        fileNamePattern = "${HOME_DIR}/logs/papws-firebase-%d{yyyy-MM-dd}.log"
         maxHistory = 5
         totalSizeCap = FileSize.valueOf("1GB")
     }
@@ -52,13 +52,11 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
 }
 if (Environment.isDevelopmentMode()) {
     logger("org.pac4j", OFF, ['STDOUT'], false)
-
     logger("papws.api", DEBUG, ['STDOUT'], false)
 }
 if (Environment.current == Environment.PRODUCTION) {
     logger("org.pac4j", OFF, ['STDOUT'], false)
-
-    logger("papws.api", ERROR, ['STDOUT', 'FIREBASE'], false)
+    logger("papws.api", INFO, ['STDOUT', 'FIREBASE'], false)
 
 }  
 

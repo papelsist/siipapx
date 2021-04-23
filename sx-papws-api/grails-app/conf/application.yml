@@ -82,7 +82,7 @@ environments:
             dbCreate: none
             url: jdbc:mysql://localhost:3306/siipapx_pos?autoReconnect=true&useSSL=false
             username: root
-            password: sys2
+            password: sys
     test:
         dataSource:
             dbCreate: create-drop
@@ -116,7 +116,7 @@ environments:
                 validationInterval: 15000
     certificacion:
         dataSource:
-            dbCreate: update
+            dbCreate: none
             url: jdbc:mysql://${JDBC_CONNECTION_STRING}?autoReconnect=true
             username: root
             password: sys
@@ -137,13 +137,13 @@ environments:
                 validationInterval: 15000
 ---
 server:
-  port: 9090
+  port: 9790
   contextPath: /siipapx
 ---
 environments:
     certificacion:
         server:
-            port: 9099
+            port: 9799
 grails:
     cors:
         enabled: true
