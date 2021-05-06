@@ -7,7 +7,6 @@ import groovy.util.logging.Slf4j
 
 import grails.util.Environment
 
-import org.springframework.beans.factory.annotation.Value
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
@@ -16,9 +15,6 @@ import com.google.firebase.cloud.FirestoreClient
 import com.google.cloud.firestore.Firestore
 import com.google.cloud.firestore.WriteResult
 import com.google.api.core.ApiFuture
-
-import com.google.firebase.messaging.FirebaseMessaging
-
 
 @Slf4j
 @CompileStatic
@@ -29,10 +25,10 @@ class CloudService {
   @PostConstruct()
   init() {
     String dirPath = '.'
-    String fileName = 'papx-ws-dev-firebase-sdk.json'
-    if(Environment.current == Environment.PRODUCTION) {
+    String fileName = 'papx-ws-prod-firebase-sdk.json'
+    if(Environment.current == Environment.DEVELOPMENT) {
       dirPath = System.getProperty('user.home') + '/.firebase'
-      fileName = 'papx-ws-prod-firebase-sdk.json'
+      fileName = 'papx-ws-dev-firebase-sdk.json'
     }
     File file = new File(dirPath, fileName)
     FileInputStream serviceAccount = new FileInputStream(file);

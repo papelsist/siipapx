@@ -255,7 +255,7 @@ class ImportadorDeSolicitudesService implements  EventListener<QuerySnapshot>{
           ], SetOptions.merge())
 
     } else {
-      log.info('Errors: {}', sol.errors)
+      log.info('Errors:  {}', sol.errors)
       return
     }
   }
