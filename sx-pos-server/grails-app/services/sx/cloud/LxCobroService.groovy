@@ -76,7 +76,8 @@ class LxCobroService implements ApplicationListener<ContextRefreshedEvent>, Even
     }
 
     def depositoFbToDeposito(Map<String,Object> deposito, def depositoSnapshot){
-
+        def found = SolicitudDeDeposito.where{sw2 == deposito.id}.first()
+        
         def solicitud = crearSolicitudDeposito(deposito)
          
         def cobro = crearCobro(solicitud)
