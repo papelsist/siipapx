@@ -3,19 +3,15 @@ package sx.core
 import com.luxsoft.utils.ImporteALetra
 import com.luxsoft.utils.Periodo
 import grails.gorm.transactions.Transactional
+import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 import groovy.transform.ToString
-import grails.plugin.springsecurity.annotation.Secured
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.springframework.http.HttpStatus
-
-import sx.cxc.CuentaPorCobrar
+import sx.inventario.SolicitudDeTrasladoService
 import sx.logistica.CondicionDeEnvio
 import sx.logistica.Envio
 import sx.reports.ReportService
-import sx.inventario.SolicitudDeTrasladoService
-
-
 
 @Secured("hasRole('ROLE_POS_USER')")
 class VentaController extends RestfulController{

@@ -51,7 +51,7 @@ import sx.core.Sucursal
 @Slf4j
 class ImportadorDeSolicitudesService implements  EventListener<QuerySnapshot>{
 
-  static lazyInit = false
+  static lazyInit = true
 
   ListenerRegistration registration
   CloudService cloudService

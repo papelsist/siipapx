@@ -4,6 +4,7 @@ import com.luxsoft.cfdix.v33.CfdiFacturaBuilder
 import com.luxsoft.cfdix.v33.CfdiSellador33
 import com.luxsoft.cfdix.v33.TrasladoBuilder
 import org.springframework.web.servlet.i18n.FixedLocaleResolver
+import sx.core.ExistenciaListener
 
 
 // Place your Spring DSL code here
@@ -31,5 +32,8 @@ beans = {
         Locale.setDefault(defaultLocale)
     }
 
-
+    existenciaListener(ExistenciaListener) {
+        cloudService = ref('cloudService')
+        lxExistenciaService = ref('lxExistenciaService')
+    }
 }

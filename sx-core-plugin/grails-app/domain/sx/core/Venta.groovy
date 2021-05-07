@@ -120,6 +120,8 @@ class Venta {
 
     Boolean callcenter = false
 
+    Long callcenterVersion = 1
+
     static constraints = {
         nombre nullable: true
         tipo  inList:['CON','COD','CRE','PSF','INE','OTR','ACF','ANT','AND']
@@ -150,6 +152,7 @@ class Venta {
         ventaIne nullable: true
         complementoIne nullable: true
         noFacturable nullable: true
+        callcenterVersion nullable: true
     }
 
     static mapping = {

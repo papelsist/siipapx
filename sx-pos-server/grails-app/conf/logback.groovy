@@ -88,7 +88,7 @@ if (Environment == Environment.PRODUCTION) {
     logger("sx.cxc", ERROR, ['STDOUT'], false)
     logger("com.luxsoft.cfdix.v33", ERROR, ['STDOUT'], false)
     logger("pos.server", ERROR, ['STDOUT'], false)
-    logger("sx.cloud", DEBUG, ['STDOUT', 'FIREBASE'], false)
+    logger("sx.cloud", INFO, ['STDOUT', 'FIREBASE'], false)
 }  
 
 root(ERROR, ['STDOUT'])
