@@ -7,6 +7,9 @@ import com.luxsoft.utils.Periodo
 
 
 import sx.core.Producto
+import sx.core.Linea 
+import sx.core.Clase
+import sx.core.Marca
 import sx.core.Existencia
 import sx.inventario.Transformacion
 import sx.inventario.TransformacionDet
@@ -87,6 +90,13 @@ class CotizacionCajaService {
         producto.kilos = cotizacionCaja.kilos
         producto.gramos = cotizacionCaja.gramos
         producto.fechaLista = new Date()
+
+        def linea = Linea.get('402880fc5e4ec411015e4ec62ffc0011')
+        def clase = Clase.get('8a8a8165745a0a7501745ebc603300ba')
+        def marca = Marca.get('402880fc5e4ec411015e4ec63624006a')
+        producto.linea = linea
+        producto.clase = clase
+        producto.marca = marca
 
         producto.save failOnError:true, flush:true
     }

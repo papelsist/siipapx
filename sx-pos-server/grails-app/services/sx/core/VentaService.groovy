@@ -214,10 +214,10 @@ class VentaService implements  EventPublisher{
         registrarPuestoCallCenter(venta, usuario)
         return venta
     }
-    def quitarPuesto(Venta venta) {
+    def quitarPuesto(Venta venta,  String usuario = null) {
         venta.puesto = null
         venta.save flush: true
-        registrarPuestoCallCenter(venta)
+        registrarPuestoCallCenter(venta,usuario)
         return venta
     }
 
