@@ -29,7 +29,7 @@ class PapelsaCloudService {
   private FirebaseApp papelws
 
   // @PostConstruct()
-  init() {
+  def init() {
     String dirPath = '.'
     String fileName = 'papx-ws-prod-firebase-sdk.json'
     if(Environment.current == Environment.DEVELOPMENT) {
