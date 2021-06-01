@@ -58,10 +58,10 @@ class ImportadorDeSolicitudesService implements ApplicationListener<ContextRefre
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
     log.info('Context started/refreched...')
-    start()
+    // start()
   }
 
-  @PostConstruct
+  // @PostConstruct
   def start() {
     log.info('Inicializando Solicitudes Firestore listener...')
     this.registerListener()

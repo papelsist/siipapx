@@ -28,7 +28,7 @@ class PapelsaCloudService {
   
   private FirebaseApp papelws
 
-  @PostConstruct()
+  // @PostConstruct()
   init() {
     String dirPath = '.'
     String fileName = 'papx-ws-prod-firebase-sdk.json'
@@ -75,7 +75,7 @@ class PapelsaCloudService {
   }
   
 
-  @PreDestroy()
+  // @PreDestroy()
   void close() {
     if(this.papelws) {
       String appName = this.papelws.name
