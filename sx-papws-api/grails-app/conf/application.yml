@@ -82,7 +82,7 @@ environments:
             dbCreate: none
             url: jdbc:mysql://localhost:3306/siipapx_pos?autoReconnect=true&useSSL=false
             username: root
-            password: sys
+            password: sys2
     test:
         dataSource:
             dbCreate: create-drop

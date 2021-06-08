@@ -22,8 +22,8 @@ class CloudService {
 
   private FirebaseApp papelws
 
-  @PostConstruct()
-  init() {
+  // @PostConstruct()
+  def init() {
     String dirPath = '.'
     String fileName = 'papx-ws-prod-firebase-sdk.json'
     if(Environment.current == Environment.DEVELOPMENT) {
@@ -71,7 +71,7 @@ class CloudService {
   }
 
 
-  @PreDestroy()
+  // @PreDestroy()
   void close() {
     if(this.papelws) {
       String appName = this.papelws.name

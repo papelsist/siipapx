@@ -271,7 +271,8 @@ class VentaController extends RestfulController{
     @Transactional
     def quitarPuesto() {
         Venta venta = Venta.get(params.id)
-        venta = ventaService.quitarPuesto(venta)
+        bindData venta, getObjectToBind()
+        venta = ventaService.quitarPuesto(venta, params.usuario)
         respond venta   
     }
  
