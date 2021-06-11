@@ -34,9 +34,9 @@ class LxExistenciaService {
   void afterInsert(PostInsertEvent event) {
     Existencia exis = getExistencia(event)
     if (exis) {
-      log.debug('{} {} Exis: {} ({})', event.eventType.name(), event.entity.name, exis.clave, exis.sucursalNombre)
-      String id = exis.producto.id
-      updateFirebase(exis)
+      // log.debug('{} {} Exis: {} ({})', event.eventType.name(), event.entity.name, exis.clave, exis.sucursalNombre)
+      // String id = exis.producto.id
+      // updateFirebase(exis)
     }
   }
 
@@ -44,9 +44,9 @@ class LxExistenciaService {
   void afterUpdate(PostUpdateEvent event) {
     Existencia exis = getExistencia(event)
     if (exis) {
-      log.debug('{} {} Exis: {} ({})', event.eventType.name(), event.entity.name, exis.clave, exis.sucursalNombre)
-      String id = exis.producto.id
-      updateFirebase(exis)
+      // log.debug('{} {} Exis: {} ({})', event.eventType.name(), event.entity.name, exis.clave, exis.sucursalNombre)
+      // String id = exis.producto.id
+      // updateFirebase(exis)
     }
   }
 
