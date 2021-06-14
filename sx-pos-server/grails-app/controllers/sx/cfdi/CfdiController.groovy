@@ -9,7 +9,9 @@ import grails.rest.RestfulController
 import groovy.transform.ToString
 import sx.core.Cliente
 import sx.core.Venta
+import sx.core.Empresa
 import sx.reports.ReportService
+
 
 
 @Secured("hasRole('ROLE_POS_USER')")
@@ -56,7 +58,15 @@ class CfdiController extends RestfulController{
         parametros.IMPRESO_IMAGEN = realPath + '/Impreso.jpg'
         parametros.FACTURA_USD = realPath + '/facUSD.jpg'
         // return reportService.run('PapelCFDI3.jrxml', data['PARAMETROS'], data['CONCEPTOS'])
-        return reportService.imprimirFactura('PapelCFDI3.jrxml', data['PARAMETROS'], data['CONCEPTOS'])
+        def empresa = Empresa.first()
+        
+        if(empresa.rfc == 'PBA0511077F9'){
+             parametros.PAPELSA = realPath + '/PAPELSA_LOGO.jpg'
+             return reportService.imprimirFactura('PapelsaBajioCFDI3', data['PARAMETROS'], data['CONCEPTOS'])
+        }else{
+             return reportService.imprimirFactura('PapelCFDI3', data['PARAMETROS'], data['CONCEPTOS'])
+        }
+       
     }
 
     private generarImpresionParaMailV33( Cfdi cfdi, boolean envio = false) {

@@ -177,6 +177,9 @@ class CfdiService {
         def data = V33PdfGenerator.getReportData(cfdi, true)
         Map parametros = data['PARAMETROS']
         parametros.PAPELSA = logoPath
+
+        println "Imprimiendo el reporte de la factura de todos"
+
         return reportService.run('PapelCFDI3.jrxml', data['PARAMETROS'], data['CONCEPTOS'])
     }
 

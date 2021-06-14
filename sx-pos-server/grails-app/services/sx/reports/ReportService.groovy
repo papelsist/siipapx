@@ -42,7 +42,7 @@ class ReportService {
     ByteArrayOutputStream imprimirFactura(String reportName, Map params, Collection data){
 
         // log.debug("Ejecutando reporte {} con parametros: ${params} y data: ${data}", reportName)
-        log.debug("Ejecutando reporte {}", reportName)
+        log.debug("Ejecutando reporte {} de factura", reportName)
 
 
         def reportes = []
@@ -64,7 +64,7 @@ class ReportService {
 
             if(i == 2){
                 def reportDef2=new JasperReportDef(
-                        name:'PapelCFDI3copia',
+                        name:reportName+'copia',
                         fileFormat: JasperExportFormat.PDF_FORMAT,
                         parameters:params,
                         reportData:data
