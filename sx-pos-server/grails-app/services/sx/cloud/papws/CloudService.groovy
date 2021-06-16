@@ -81,7 +81,7 @@ class CloudService {
       Bucket bucket = storageClient.bucket(this.firebaseBucket)
       Storage storage = bucket.getStorage()
       storage.create(blobInfo, data)
-      log.info('Document {} Uploaded to {}', objectName, this.firebaseBucket)
+      log.info('Document {} Uploaded to PAPWS {}', objectName, this.firebaseBucket)
     }catch (Exception ex) {
       log.error('Error subiendo documento ex:' + ExceptionUtils.getRootCauseMessage(ex), ex)
     }

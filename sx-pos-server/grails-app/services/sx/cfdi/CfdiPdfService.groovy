@@ -1,5 +1,7 @@
 package sx.cfdi
 
+import org.apache.commons.lang3.exception.ExceptionUtils
+
 import com.google.cloud.storage.BlobId
 import com.google.cloud.storage.BlobInfo
 import com.google.cloud.storage.Storage
@@ -45,9 +47,15 @@ class CfdiPdfService {
         String objectName =buildOjbectName(cfdi, 'pdf')
         def rawData = this.generarPdf(cfdi)
         byte[] data = rawData.toByteArray()
-        
-        publishCfdiDocument(objectName, data, "application/pdf", [size: data.length, uuid: cfdi.uuid, receptorRfc: cfdi.receptorRfc, tipoArchivo: 'pdf'])
-        log.info('Factura {} publicada en firebase exitosamente', objectName)
+        try {
+            log.debug('Subiendo a Firestore en Callcenter 1')
+            publishCfdiDocument(objectName, data, "application/pdf", [size: data.length, uuid: cfdi.uuid, receptorRfc: cfdi.receptorRfc, tipoArchivo: 'pdf'])
+            log.info('Factura {} publicada en firebase CALLCENTER 1 exitosamente', objectName)
+        }
+        catch(Exception ex) {
+            String message = ExceptionUtils.getRootCauseMessage(ex)
+            log.error('Error subiendo factura  a firestore CALLCENTER 1: ' + message)
+        }
         this.cloudService.publishDocument(objectName, data, "application/pdf", [size: data.length, uuid: cfdi.uuid, receptorRfc: cfdi.receptorRfc, tipoArchivo: 'pdf'])
     }
 
@@ -55,8 +63,13 @@ class CfdiPdfService {
         // Object
         String objectName =buildOjbectName(cfdi, 'xml')
         def data = cfdi.getUrl().getBytes()
-        publishCfdiDocument(objectName, data, "text/xml", [size: data.length, uuid: cfdi.uuid, receptorRfc: cfdi.receptorRfc, tipoArchivo: 'xml'])
-        log.info('Factura {} publicada en firebase exitosamente', objectName)
+        try {
+            publishCfdiDocument(objectName, data, "text/xml", [size: data.length, uuid: cfdi.uuid, receptorRfc: cfdi.receptorRfc, tipoArchivo: 'xml'])
+            log.info('Factura {} publicada en firebase CALLCENTER 1exitosamente', objectName)
+        } catch(Exception ex) {
+            String message = ExceptionUtils.getRootCauseMessage(ex)
+            log.error('Error subiendo factura  a firestore CALLCENTER 1: ' + message)
+        }
         this.cloudService.publishDocument(objectName, data, "text/xml", [size: data.length, uuid: cfdi.uuid, receptorRfc: cfdi.receptorRfc, tipoArchivo: 'xml'])
     }
 

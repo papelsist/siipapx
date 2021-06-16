@@ -76,6 +76,8 @@ class EmbarqueController extends RestfulController {
                 }
                 if(condicion.venta.callcenter) {
                     it.callcenter = condicion.venta.sw2
+                    it.callcenterVersion = condicion.venta.callcenterVersion ?: 1
+
                 }
                 // Actualizando valor
                 if (!it.partidas) {

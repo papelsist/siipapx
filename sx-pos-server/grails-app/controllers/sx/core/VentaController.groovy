@@ -165,12 +165,11 @@ class VentaController extends RestfulController{
         params.sort = params.sort ?:'lastUpdated'
         params.order = params.order ?:'desc'
         
-        log.info('Pendientes: {}', params)
+        // log.info('Pendientes: {}', params)
         def query = Venta.where{ sucursal == sucursal && cuentaPorCobrar == null && facturar == null }
 
         Boolean callcenter = params.getBoolean('callcenter', false)
         if(callcenter) {
-            log.info('Ventas de callcenter: {}', callcenter)
             query = query.where{callcenter == true}
         }
         else 
@@ -308,13 +307,13 @@ class VentaController extends RestfulController{
         Venta venta = Venta.get(params.id)
         try {
             
-             def cfdi = venta.cuentaPorCobrar.cfdi
+            def cfdi = venta.cuentaPorCobrar.cfdi
 
-             if(!cfdi){
-                 cfdi = ventaService.generarCfdi(venta)
-             }
-             
-                cfdi = ventaService.timbrar(venta)
+            if(!cfdi){
+                cfdi = ventaService.generarCfdi(venta)
+            }
+
+            cfdi = ventaService.timbrar(venta)
             respond cfdi
             return
         }catch (Exception ex) {

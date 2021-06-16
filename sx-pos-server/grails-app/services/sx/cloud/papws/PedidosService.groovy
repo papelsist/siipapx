@@ -15,18 +15,22 @@ class PedidosService {
 
   void updatePedido(String id, Map changes) {
     String collection = 'pedidos'
-    try {
-      ApiFuture<WriteResult> result = this.cloudService.getFirestore()
+    ApiFuture<WriteResult> result = this.cloudService.getFirestore()
         .collection(collection)
         .document(id)
         .set(changes, SetOptions.merge())
-      def updateTime = result.get().getUpdateTime().toDate().format('dd/MM/yyyy')
-      log.info('Pedido {} actualizado at: {}', id, updateTime)
+    def updateTime = result.get().getUpdateTime().toDate().format('dd/MM/yyyy: HH:mm')
+    log.debug('Pedido {} actualizado  ({})', id, updateTime)
+    
+    /*
+    try {
+      
     }
     catch(Exception ex) {
       def msg = ExceptionUtils.getRootCauseMessage(ex)
       log.error('Error actualizando {} DocId: {} , Msg: {}', collection, id, msg)
     }
+    */
   }
 
   void mandarFacturar(Venta venta) {
@@ -36,26 +40,40 @@ class PedidosService {
         facturable: venta.facturar,
         atendio: new Date()
       ]]
-      log.info('Actualizando pedido {} status: {} en firestore', venta.documento, update.status)
+      log.info('Actualizando pedido {} status: {} en PAPWS firestore', venta.documento, update.status)
+      this.updatePedido(venta.sw2, update)
+    }
+  }
+
+  void regresaraPendiente(Venta venta) {
+    if(venta.callcenterVersion == 2) {
+      Map update = [status: 'EN_SUCURSAL', atencion: null]
+      log.info('Actualizando pedido {} status: {} en PAPWS firestore', venta.documento, update.status)
       this.updatePedido(venta.sw2, update)
     }
   }
 
   void registrarPuesto(Venta venta, String usuario) {
     if(venta.callcenterVersion == 2) {
-      try {
-        def puesto = venta.puesto
-        Map changes = [puesto: null]
-        if(puesto) {
-          changes = [puesto: [fecha: puesto, usuario: usuario]]
-        }
-        this.updatePedido(venta.sw2, changes)
-      } catch (Exception ex) {
-        String message = ExceptionUtils.getRootCauseMessage(ex)
-        log.error('Error actualizando PAPWS Firestore ' + message, ExceptionUtils.getRootCauseMessage(ex))
+      def puesto = venta.puesto
+      Map changes = [puesto: null]
+      if(puesto) {
+        changes = [puesto: [fecha: puesto, usuario: usuario]]
       }
-
+      this.updatePedido(venta.sw2, changes)
     }
+  }
+
+  void regresaraCallcenter(Venta venta, def usuario) {
+      venta.delete flush: true
+      def changes = [
+        status: 'COTIZACION', 
+        regresado: new Date(),
+        regresadoPor: usuario,
+        puesto: null,
+        atencion: null
+      ]
+      this.updatePedido(venta.sw2, changes)
   }
 
   void notificarFacturacion(Venta venta ) {
@@ -68,7 +86,8 @@ class PedidosService {
         facturacion: [
           serie: serie,
           folio: folio,
-          creado: cxc.dateCreated
+          creado: cxc.dateCreated,
+          cxc: cxc.id
         ]
       ]
       this.updatePedido(venta.sw2, changes)
@@ -83,13 +102,21 @@ class PedidosService {
           serie: cfdi.serie,
           folio: cfdi.folio,
           uuid: cfdi.uuid,
-          cfdi: cfdi.id,
+          cfdiId: cfdi.id,
           createUser: 'ND',
           updateUser: 'ND']
       ]
       this.updatePedido(venta.sw2, changes)
-
     }
 
+  }
+
+  void cancelarFactura(Venta venta) {
+    def changes = [
+      status: 'FACTURADO_CANCELADO',
+      facturacion: null,
+      factura: null,
+    ]
+    this.updatePedido(venta.sw2, changes)
   }
 }

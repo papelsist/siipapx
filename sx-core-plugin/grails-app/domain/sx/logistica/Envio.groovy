@@ -79,7 +79,9 @@ class Envio {
 
     Date salida
     
-    String callcenter 
+    String callcenter
+
+    Long callcenterVersion = 1 
     
 
     static  hasMany= [partidas : EnvioDet]
@@ -104,7 +106,7 @@ class Envio {
         cliente nullable: true
         salida nullable: true
         callcenter nullable: true
-
+        callcenterVersion nullable: true
     }
 
     def beforeDelete() {
