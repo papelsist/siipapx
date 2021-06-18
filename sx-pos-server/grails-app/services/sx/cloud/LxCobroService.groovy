@@ -58,7 +58,7 @@ class LxCobroService implements ApplicationListener<ContextRefreshedEvent>, Even
 
     @Override 
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        // start()
+        start()
     }
 
     static String TIME_FORMAT = 'dd/MM/yyyy HH:mm'
