@@ -65,7 +65,7 @@ class PedidosService {
   }
 
   void regresaraCallcenter(Venta venta, def usuario) {
-      venta.delete flush: true
+      // venta.delete flush: true
       def changes = [
         status: 'COTIZACION', 
         regresado: new Date(),
