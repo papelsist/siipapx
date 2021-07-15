@@ -95,7 +95,7 @@ class CorteDeTarjetaService {
 
         if(amex) {
             BigDecimal amexIngreso = amex.sum 0.0, {it.cobro.importe}
-            BigDecimal amexComision = MonedaUtils.round( amexIngreso * (3.75 / 100), 2)
+            BigDecimal amexComision = MonedaUtils.round( amexIngreso * (3.35 / 100), 2)
             BigDecimal amexComisionIva = MonedaUtils.round(amexComision * MonedaUtils.IVA, 2)
 
             CorteDeTarjeta corte = new CorteDeTarjeta()

@@ -31,7 +31,7 @@
 	<queryString><![CDATA[SELECT CASE 	WHEN t.debito_credito is true THEN 'TARJETA DE DEBITO'  
 			WHEN T.visa_master is true and t.debito_credito is false THEN 'TARJETA DE CREDITO'
             	WHEN T.visa_master is false and t.debito_credito is false THEN 'AMERICAN EXPRESS' ELSE 'ND' END AS TIPO
-       ,t.validacion AS REFERENCIA,A.IMPORTE,round((a.importe*t.comision/100),2)	AS IMPORTE_COMISION
+       ,t.validacion AS REFERENCIA,A.IMPORTE,round((a.importe*t.comision/100),6)	AS IMPORTE_COMISION
 ,(SELECT  SUM(CASE WHEN T.debito_credito IS TRUE THEN A.importe ELSE 0 END) FROM cobro A JOIN cobro_tarjeta T ON (T.cobro_ID=A.ID) 
  JOIN SUCURSAL S ON(S.ID=A.SUCURSAL_ID) WHERE a.FECHA=$P{FECHA_CORTE}  AND S.ID=$P{SUCURSAL}) AS TOT_DEB
 ,(SELECT  SUM(CASE WHEN T.visa_master is true and t.debito_credito is false THEN A.importe ELSE 0 END) FROM cobro A JOIN cobro_tarjeta T ON (T.cobro_ID=A.ID) 
