@@ -1,0 +1,46 @@
+apply plugin: 'project-report'
+apply plugin:"org.grails.grails-gsp"
+
+grails {
+    plugins {
+        compile project(':sx-core-plugin')
+        compile 'com.google.firebase:firebase-admin:7.1.1'
+    }
+}
+
+dependencies {
+
+    compile 'org.grails.plugins:jasper:2.1.0.RC1'
+    compile 'org.eclipse.jdt.core.compiler:ecj:4.4'
+    compile "org.grails.plugins:gsp"
+    runtime 'org.grails.plugins:grails-console:2.1.1'
+
+    compile 'org.grails.plugins:mail:2.0.0'
+    compile 'org.grails.plugins:quartz:2.0.13'
+    compile 'com.github.groovy-wslite:groovy-wslite:1.1.2'
+}
+
+war {
+    String env = System.getProperty('grails.env') ?: 'prod'
+    war.baseName = "sx-papws-api-${env.substring(0,4)}"
+    war.version = ''
+}
+springBoot {
+    executable = true
+}
+
+task buildConf() {
+    doLast {
+        String fileName = war.archiveName.replaceAll(".war", ".conf")
+        File file = file("build/libs/${fileName}")
+        file.text = ""
+        file.append("JAVA_OPTS=-Xmx2048M")
+        file.append("\nRUN_ARGS=\"--JDBC_CONNECTION_STRING=localhost:3306/siipapx_pos --JDBC_USER_PASSWORD=sys2 --PAPWS_SUCURSAL=TACUBA --server.port=4099\"")
+    }
+}
+
+bootRun {
+    systemProperties System.properties // Please note not to use '=', because this will override all configured systemProperties. This will append them.
+}
+
+war.finalizedBy(buildConf)

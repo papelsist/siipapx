@@ -1,32 +1,32 @@
+/*
+ * Copyright (c) 2018. Ruben Cancino Ramos Derechos de uso reservados
+ */
 package sx.core
 
+import com.luxsoft.cfdix.v33.CfdiFacturaBuilder
 import com.luxsoft.utils.MonedaUtils
 import grails.events.EventPublisher
 import grails.events.annotation.Publisher
 import grails.gorm.transactions.Transactional
 import grails.plugin.springsecurity.SpringSecurityService
+import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.apache.commons.lang3.time.DateUtils
-
 import sx.cfdi.Cfdi
 import sx.cfdi.CfdiPdfService
 import sx.cfdi.CfdiService
-import sx.cfdi.CfdiPdfService
 import sx.cfdi.CfdiTimbradoService
-import sx.cxc.AplicacionDeCobro
-import sx.cxc.Cobro
-import sx.cxc.CuentaPorCobrar
-import lx.cfdi.v33.CfdiUtils
 import sx.cloud.LxPedidoService
-
-
-import com.luxsoft.cfdix.v33.CfdiFacturaBuilder
+import sx.cloud.papws.PedidosService
+import sx.cxc.*
 import sx.inventario.InventarioService
-import sx.cxc.AnticipoSatService
-import sx.cxc.AnticipoSat
-import sx.cxc.AnticipoSatDet
 
+/**
+ * @author: Ruben Cancino Ramos
+ *
+ */
 @Transactional
+@Slf4j
 class VentaService implements  EventPublisher{
 
     CfdiService cfdiService
@@ -40,6 +40,7 @@ class VentaService implements  EventPublisher{
     InventarioService inventarioService
 
     LxPedidoService lxPedidoService
+    PedidosService pedidosService
 
     CfdiPdfService cfdiPdfService
 
@@ -183,7 +184,7 @@ class VentaService implements  EventPublisher{
      * @return
      */
     @Publisher
-    def mandarFacturar(String ventaId, String usuario) {
+    Venta mandarFacturar(String ventaId, String usuario) {
 
         Venta venta = Venta.get(ventaId)
         log.debug('Mandando facturar venta......'+ venta.getFolio())
@@ -195,17 +196,21 @@ class VentaService implements  EventPublisher{
         return venta
     }
 
+    /**
+     * Notificar al Callcenter del
+     * @param venta
+     * @return
+     */
     def mandarFacturarCallCenter(Venta venta) {
-        if(venta.callcenter &&  venta.sw2 == null) 
-            return
-        log.info('Actualizando estatus de facturable en CallCenter (Firebase)')
-        
-        // 1. - Pedido
-        lxPedidoService.updatePedido(venta.sw2, ['status': 'POR_FACTURAR', 'atiende': venta.facturarUsuario])
-        
-        // 2. - PedidoLog
-        Map logChanges = [status: 'POR_FACTURAR', atiende: venta.facturarUsuario, facturable: venta.facturar, atendido: new Date()]
-        lxPedidoService.updateLog(venta.sw2, logChanges)
+        if(venta.callcenter) {
+            if(venta.callcenterVersion == 2) {
+                this.pedidosService.mandarFacturar(venta)
+            } else {
+                lxPedidoService.updatePedido(venta.sw2, ['status': 'POR_FACTURAR', 'atiende': venta.facturarUsuario])
+                Map logChanges = [status: 'POR_FACTURAR', atiende: venta.facturarUsuario, facturable: venta.facturar, atendido: new Date()]
+                lxPedidoService.updateLog(venta.sw2, logChanges)
+            }
+        }
     }
 
     def registrarPuesto(Venta venta, String usuario = null) {
@@ -221,19 +226,36 @@ class VentaService implements  EventPublisher{
         return venta
     }
 
+    /**
+     *  Registra el puesto en el Callcenter
+     *
+     * @param venta
+     * @param usuario
+     * @return
+     */
     def registrarPuestoCallCenter(Venta venta, String usuario) {
-        if(venta.callcenter &&  venta.sw2 == null) 
-            return
-        log.info('Registrando PUESTO en Firebase')
-        def puesto = venta.puesto
-        Map changes = [puesto: null]
-        if(puesto) {
-            changes = [puesto: [fecha: puesto, usuario: usuario]]
+        try {
+            // if(venta.callcenter &&  venta.sw2 == null)  // Migracion a callcenter2
+                // return
+            if(venta.callcenterVersion == 2) {
+                this.pedidosService.registrarPuesto(venta, usuario)
+            } else {
+                log.info('Registrando PUESTO en Firebase')
+                def puesto = venta.puesto
+                Map changes = [puesto: null]
+                if(puesto) {
+                    changes = [puesto: [fecha: puesto, usuario: usuario]]
+                }
+                // 1. - Pedido
+                lxPedidoService.updatePedido(venta.sw2, changes)
+                // 2. - PedidoLog
+                lxPedidoService.updateLog(venta.sw2, changes)
+            }
+
+        } catch (Exception ex) {
+            String message = ExceptionUtils.getRootCauseMessage(ex)
+            log.error('Error registrando puesto en firebase: ' + message, ex)
         }
-        // 1. - Pedido
-        lxPedidoService.updatePedido(venta.sw2, changes)
-        // 2. - PedidoLog
-        lxPedidoService.updateLog(venta.sw2, changes)
     }
 
 
@@ -273,7 +295,7 @@ class VentaService implements  EventPublisher{
         cxc.comentario = pedido.comentario
         pedido.cuentaPorCobrar = cxc
         cxc.save failOnError: true
-        log.debug('Cuenta por cobrar generada: {}', cxc)
+        log.debug('Cuenta por cobrar generada: {}', cxc.id)
         pedido.cuentaPorCobrar = cxc
         pedido.save flush: true
         inventarioService.afectarInventariosPorFacturar(pedido);
@@ -291,21 +313,30 @@ class VentaService implements  EventPublisher{
     * Fase: FACTURADO
     */
     def notificarFacturacionEnFirebase(Venta venta ) {
-        def cxc = venta.cuentaPorCobrar
-        def serie = venta.tipo
-        def folio = cxc.documento.toString()
-        
-        // Log Pedido
-        def changes = [
-            status: 'FACTURADO',
-            facturacion: [
-                serie: serie,
-                folio: folio, 
-                creado: cxc.dateCreated
-            ]
-        ]
-        lxPedidoService.updatePedido(venta.sw2, changes)
-        lxPedidoService.updateLog(venta.sw2, changes)
+        try {
+            if(venta.callcenterVersion == 2) {
+                pedidosService.notificarFacturacion(venta)
+            } else {
+                def cxc = venta.cuentaPorCobrar
+                def serie = venta.tipo
+                def folio = cxc.documento.toString()
+
+                // Log Pedido
+                def changes = [
+                  status: 'FACTURADO',
+                  facturacion: [
+                    serie: serie,
+                    folio: folio,
+                    creado: cxc.dateCreated
+                  ]
+                ]
+                lxPedidoService.updatePedido(venta.sw2, changes)
+                lxPedidoService.updateLog(venta.sw2, changes)
+            }
+        } catch(Exception ex) {
+            String message = ExceptionUtils.getRootCauseMessage(ex)
+            log.error('Error notificando en firebase: ' + message, ex)
+        }
     }
 
     def generarCfdi_Bak(Venta venta){
@@ -332,6 +363,14 @@ class VentaService implements  EventPublisher{
         if(venta.callcenter ) {
             notificarTimbradoEnFirebase(venta, cfdi)
             cfdiPdfService.pushToFireStorage(cfdi)
+            /*
+            try {
+
+            } catch(Exception ex) {
+                String message = ExceptionUtils.getRootCauseMessage(ex)
+                log.error('Error subiendo factura  a firestore: ' + message)
+            }
+            */
         }
 
         if (venta.tipo == 'CRE') {
@@ -363,23 +402,30 @@ class VentaService implements  EventPublisher{
     * Fase: FACTURADO_TIMBRADO
     */
     def notificarTimbradoEnFirebase(Venta venta, Cfdi cfdi) {
-        if(venta.callcenter) { 
-            def changes = [
-                status: 'FACTURADO_TIMBRADO',
-                facturacion: [
+        try {
+            if(venta.callcenterVersion == 2) {
+                log.debug('Notificando Callcenter 2')
+                pedidosService.notificarTimbrado(venta, cfdi)
+                log.debug('PAPWS NOTIFICADO OK...')
+            } else {
+                log.debug('Notificando Callcenter 1')
+                def changes = [
+                  status: 'FACTURADO_TIMBRADO',
+                  facturacion: [
                     serie: cfdi.serie,
-                    folio: cfdi.folio, 
+                    folio: cfdi.folio,
                     creado: cfdi.dateCreated,
                     cfdi: [id: cfdi.id, uuid: cfdi.uuid]
-                ],
-                // timbrado: cfdi.timbre.fechaTimbrado
-            ]
-            lxPedidoService.updatePedido(venta.sw2, changes)
-            lxPedidoService.updateLog(venta.sw2, changes)
+                  ],
+                ]
+                lxPedidoService.updatePedido(venta.sw2, changes)
+                lxPedidoService.updateLog(venta.sw2, changes)
+            }
+        } catch (Exception ex) {
+            String message = ExceptionUtils.getRootCauseMessage(ex)
+            log.error('Error notificando timbrado de factura en firebase: ' + message, ex)
         }
     }
-
-    
 
     @Transactional
     def generarCfdi(Venta venta){
@@ -390,8 +436,6 @@ class VentaService implements  EventPublisher{
         cxc.save(flush: true)
         return cfdi
     }
-
-
 
     def logEntity(Venta venta) {
         /*
@@ -562,14 +606,19 @@ class VentaService implements  EventPublisher{
     * Fase: FACTURADO_TIMBRADO
     */
     def notificarCancelacionEnFirebase(Venta venta) {
-        if(venta.callcenter && venta.sw2) { 
-            def changes = [
-                status: 'FACTURADO_CANCELADO',
-                facturacion: null,
-                timbrado: null
-            ]
-            lxPedidoService.updatePedido(venta.sw2, changes)
-            lxPedidoService.updateLog(venta.sw2, changes)
+        if(venta.callcenter) { 
+            if(venta.callcenterVersion == 2) {
+                pedidosService.cancelarFactura(venta)
+            } else {
+                def changes = [
+                    status: 'FACTURADO_CANCELADO',
+                    facturacion: null,
+                    timbrado: null
+                ]
+                lxPedidoService.updatePedido(venta.sw2, changes)
+                lxPedidoService.updateLog(venta.sw2, changes)
+            }
+            
         }
     }
 
@@ -577,17 +626,30 @@ class VentaService implements  EventPublisher{
     def regresaraPendiente(Venta venta) {
         venta.facturar = null
         venta = venta.save(flush: true)
-        def changes = [status: 'FACTURABLE']
-        lxPedidoService.updatePedido(venta.sw2, changes)
-        lxPedidoService.updateLog(venta.sw2, changes)
+        if(venta.callcenter) {
+            if(venta.callcenterVersion == 2) {
+                pedidosService.regresaraPendiente(venta);
+            } else {
+                def changes = [status: 'FACTURABLE']
+                lxPedidoService.updatePedido(venta.sw2, changes)
+                lxPedidoService.updateLog(venta.sw2, changes)
+            }
+        }
         return venta
     }
 
     void regresarCallcenter(Venta venta, def usuario) {
         venta.delete flush: true
-        def changes = [status: 'COTIZACION', updateUser: usuario]
-        lxPedidoService.updatePedido(venta.sw2, changes)
-        lxPedidoService.updateLog(venta.sw2, changes)
+        if(venta.callcenter) {
+            if(venta.callcenterVersion == 2) {
+                this.pedidosService.regresaraCallcenter(venta, usuario)
+            } else {
+                def changes = [status: 'COTIZACION', updateUser: usuario]
+                lxPedidoService.updatePedido(venta.sw2, changes)
+                lxPedidoService.updateLog(venta.sw2, changes)
+            }
+        }
+        
     }
 
 

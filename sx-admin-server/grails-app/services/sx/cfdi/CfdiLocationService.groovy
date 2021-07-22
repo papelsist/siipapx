@@ -2,16 +2,16 @@ package sx.cfdi
 
 import com.luxsoft.utils.ZipUtils
 import grails.util.Environment
+import groovy.util.logging.Slf4j
 import org.apache.commons.io.FileUtils
 import sx.core.AppConfig
 
+@Slf4j
 class CfdiLocationService {
 
     CfdiEdicomService cfdiEdicomService
 
     private AppConfig config
-
-
 
     Byte[] getXml(Cfdi cfdi, Boolean downloadIfNotFound = true){
         String fileName = cfdi.url.getPath().substring(cfdi.url.getPath().lastIndexOf('/')+1)
@@ -22,7 +22,6 @@ class CfdiLocationService {
             file = downloadXmlFromUUID(cfdi)
             // file = new File(getCfdiLocation(cfdi), fileName)
             return file.getBytes()
-
         }
 
         return file.getBytes()

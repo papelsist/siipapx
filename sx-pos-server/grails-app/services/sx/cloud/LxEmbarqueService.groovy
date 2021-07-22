@@ -25,6 +25,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils
 
 
 import sx.logistica.Envio
+// import papws.api.CloudService
+import sx.cloud.papws.PedidosService
 
 @Slf4j
 @GrailsCompileStatic
@@ -32,6 +34,7 @@ import sx.logistica.Envio
 class LxEmbarqueService {
 
 	FirebaseService firebaseService
+    PedidosService pedidosService
 
 	String getId(AbstractPersistenceEvent event) {
         if ( event.entityObject instanceof Envio ) {
@@ -62,7 +65,14 @@ class LxEmbarqueService {
                         asignado: envio.dateCreated
                     ]
                 ]
-                updateFirebase(envio.callcenter, changes)
+                if(envio.callcenter) {
+                    if(envio.callcenterVersion == 2) {
+                        updateCallcenter2(envio.callcenter, changes)
+                    } else {
+                        updateFirebase(envio.callcenter, changes)
+                    }
+                }
+                
             }
         }
     }
@@ -85,7 +95,12 @@ class LxEmbarqueService {
                     String newState = state[i]
                     log.debug('Facura {}-{} Salida: {} ', envio.tipoDocumento, envio.documento, newState)
                     def changes = [embarqueLog: [salida: newState]]
-                    updateFirebase(envio.callcenter, changes)
+                    if(envio.callcenterVersion == 2) {
+                        updateCallcenter2(envio.callcenter, changes)
+                    } else {
+
+                        updateFirebase(envio.callcenter, changes)
+                    }
                 }
 
                 if(property == 'recepcion') {
@@ -102,7 +117,12 @@ class LxEmbarqueService {
                     } 
                     log.debug('Facura {}-{} Recibida: {} ', envio.tipoDocumento, envio.documento, newState)
                     def changes = [embarqueLog: [recepcion: recepcion]]
-                    updateFirebase(envio.callcenter, changes)
+                    if(envio.callcenterVersion == 2) {
+                        updateCallcenter2(envio.callcenter, changes)
+                    } else {
+                        updateFirebase(envio.callcenter, changes)
+                    }
+                    
                 }
             }
         }
@@ -118,13 +138,22 @@ class LxEmbarqueService {
             if(envio.callcenter) {
                 log.debug('Nofificando Callcenter ')
                 def changes = [embarqueLog: null]
-                updateFirebase(envio.callcenter, changes)
+                if(envio.callcenterVersion == 2) {
+                    updateCallcenter2(envio.callcenter, changes)
+                } else {
+                    updateFirebase(envio.callcenter, changes)
+                }
+                
             }
         }
     }
 
     void updateFirebase(String id, Map changes) {
         firebaseService.updateCollection('pedidos_log', id, changes)
+    }
+
+    void updateCallcenter2(String id, Map changes) {
+        pedidosService.updatePedido(id, changes)
     }
 
 

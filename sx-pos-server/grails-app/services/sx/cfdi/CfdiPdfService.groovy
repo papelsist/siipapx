@@ -1,38 +1,18 @@
 package sx.cfdi
 
-import java.util.zip.ZipEntry
-import java.util.zip.ZipOutputStream
-
-import groovy.xml.XmlUtil
-import groovy.util.logging.Slf4j
-
-import grails.util.Environment
-import grails.gorm.transactions.Transactional
-import grails.web.context.ServletContextHolder
-
-
-
-import org.apache.commons.lang3.StringEscapeUtils
-import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.exception.ExceptionUtils
-import org.grails.core.io.ResourceLocator
 
-import lx.cfdi.v33.CfdiUtils
-import lx.cfdi.v33.Comprobante
-import lx.cfdi.v33.ine.IneUtils
-import com.luxsoft.cfdix.CFDIXUtils
+import com.google.cloud.storage.BlobId
+import com.google.cloud.storage.BlobInfo
+import com.google.cloud.storage.Storage
+import com.google.cloud.storage.StorageOptions
 import com.luxsoft.cfdix.v33.V33PdfGenerator
-import sx.core.AppConfig
-import sx.core.Venta
-import sx.reports.ReportService
+import groovy.util.logging.Slf4j
+import org.grails.core.io.ResourceLocator
 import sx.cloud.FirebaseService
-
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.BlobInfo;
-
-import java.nio.file.Paths;
+import sx.cloud.papws.CloudService
+import sx.core.AppConfig
+import sx.reports.ReportService
 
 @Slf4j
 class CfdiPdfService {
@@ -44,6 +24,8 @@ class CfdiPdfService {
     ResourceLocator grailsResourceLocator
 
     FirebaseService firebaseService
+
+    CloudService cloudService
 
     ByteArrayOutputStream generarPdf( Cfdi cfdi, boolean envio = true, boolean actualizar = false) {
         def realPath = grailsResourceLocator.findResourceForURI("/reports").getURI().getPath() ?: 'reports'
@@ -64,20 +46,31 @@ class CfdiPdfService {
 
         String objectName =buildOjbectName(cfdi, 'pdf')
         def rawData = this.generarPdf(cfdi)
-        def data = rawData.toByteArray()
-        
-        publishCfdiDocument(objectName, data, "application/pdf", [size: data.length, uuid: cfdi.uuid, receptorRfc: cfdi.receptorRfc, tipoArchivo: 'pdf'])
-        log.info('Factura {} publicada en firebase exitosamente', objectName)
-
+        byte[] data = rawData.toByteArray()
+        try {
+            log.debug('Subiendo a Firestore en Callcenter 1')
+            publishCfdiDocument(objectName, data, "application/pdf", [size: data.length, uuid: cfdi.uuid, receptorRfc: cfdi.receptorRfc, tipoArchivo: 'pdf'])
+            log.info('Factura {} publicada en firebase CALLCENTER 1 exitosamente', objectName)
+        }
+        catch(Exception ex) {
+            String message = ExceptionUtils.getRootCauseMessage(ex)
+            log.error('Error subiendo factura  a firestore CALLCENTER 1: ' + message)
+        }
+        this.cloudService.publishDocument(objectName, data, "application/pdf", [size: data.length, uuid: cfdi.uuid, receptorRfc: cfdi.receptorRfc, tipoArchivo: 'pdf'])
     }
 
     def pushXml(Cfdi cfdi) {
         // Object
         String objectName =buildOjbectName(cfdi, 'xml')
         def data = cfdi.getUrl().getBytes()
-        publishCfdiDocument(objectName, data, "text/xml", [size: data.length, uuid: cfdi.uuid, receptorRfc: cfdi.receptorRfc, tipoArchivo: 'xml'])
-        log.info('Factura {} publicada en firebase exitosamente', objectName)
-
+        try {
+            publishCfdiDocument(objectName, data, "text/xml", [size: data.length, uuid: cfdi.uuid, receptorRfc: cfdi.receptorRfc, tipoArchivo: 'xml'])
+            log.info('Factura {} publicada en firebase CALLCENTER 1exitosamente', objectName)
+        } catch(Exception ex) {
+            String message = ExceptionUtils.getRootCauseMessage(ex)
+            log.error('Error subiendo factura  a firestore CALLCENTER 1: ' + message)
+        }
+        this.cloudService.publishDocument(objectName, data, "text/xml", [size: data.length, uuid: cfdi.uuid, receptorRfc: cfdi.receptorRfc, tipoArchivo: 'xml'])
     }
 
     def publishCfdiDocument(String objectName, def data, String contentType, Map metaData) {
@@ -96,6 +89,7 @@ class CfdiPdfService {
 
         storage.create(blobInfo,data)
         log.info('Documento {} publicada EXITOSAMENTE en firebase', objectName)
+
     }
 
     String buildOjbectName(Cfdi cfdi, String sufix) {

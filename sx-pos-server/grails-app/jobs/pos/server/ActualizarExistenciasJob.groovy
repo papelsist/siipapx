@@ -1,10 +1,13 @@
 package pos.server
 
+import grails.util.Environment
+import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.exception.ExceptionUtils
 import sx.core.ExistenciaService
 import sx.core.Inventario
 import sx.core.Producto
 
+@Slf4j
 class ActualizarExistenciasJob {
 
     ExistenciaService existenciaService
@@ -25,6 +28,11 @@ class ActualizarExistenciasJob {
     }
 
     def execute() {
+        if(Environment.isDevelopmentMode()){
+            log.info('Development Environment no se ejecuta la actualizacion de existencias')
+            return
+        }
+
         Date hoy = new Date()
         def ejercicio = hoy[Calendar.YEAR]
         def mes = hoy[Calendar.MONTH] + 1

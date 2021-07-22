@@ -3,19 +3,15 @@ package sx.core
 import com.luxsoft.utils.ImporteALetra
 import com.luxsoft.utils.Periodo
 import grails.gorm.transactions.Transactional
+import grails.plugin.springsecurity.annotation.Secured
 import grails.rest.RestfulController
 import groovy.transform.ToString
-import grails.plugin.springsecurity.annotation.Secured
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.springframework.http.HttpStatus
-
-import sx.cxc.CuentaPorCobrar
+import sx.inventario.SolicitudDeTrasladoService
 import sx.logistica.CondicionDeEnvio
 import sx.logistica.Envio
 import sx.reports.ReportService
-import sx.inventario.SolicitudDeTrasladoService
-
-
 
 @Secured("hasRole('ROLE_POS_USER')")
 class VentaController extends RestfulController{
@@ -169,12 +165,11 @@ class VentaController extends RestfulController{
         params.sort = params.sort ?:'lastUpdated'
         params.order = params.order ?:'desc'
         
-        log.info('Pendientes: {}', params)
+        // log.info('Pendientes: {}', params)
         def query = Venta.where{ sucursal == sucursal && cuentaPorCobrar == null && facturar == null }
 
         Boolean callcenter = params.getBoolean('callcenter', false)
         if(callcenter) {
-            log.info('Ventas de callcenter: {}', callcenter)
             query = query.where{callcenter == true}
         }
         else 
@@ -312,13 +307,13 @@ class VentaController extends RestfulController{
         Venta venta = Venta.get(params.id)
         try {
             
-             def cfdi = venta.cuentaPorCobrar.cfdi
+            def cfdi = venta.cuentaPorCobrar.cfdi
 
-             if(!cfdi){
-                 cfdi = ventaService.generarCfdi(venta)
-             }
-             
-                cfdi = ventaService.timbrar(venta)
+            if(!cfdi){
+                cfdi = ventaService.generarCfdi(venta)
+            }
+
+            cfdi = ventaService.timbrar(venta)
             respond cfdi
             return
         }catch (Exception ex) {

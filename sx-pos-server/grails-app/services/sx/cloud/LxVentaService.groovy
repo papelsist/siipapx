@@ -120,14 +120,14 @@ class LxVentaService implements ApplicationListener<ContextRefreshedEvent>, Even
         update.put("status", "FACTURABLE");
                     
         DocumentReference pedidoRef = pedidoSnapshot.getReference()
-        ApiFuture<WriteResult> writeResult = pedidoRef.set(update, SetOptions.merge())  
-        
+        ApiFuture<WriteResult> writeResult = pedidoRef.set(update, SetOptions.merge())
+
         
         firebaseService.updateCollection('pedidos_log', pedido.id, update)
 
     }
 
-    
+
 
 
     def crearVenta(Map<String,Object> pedido, def sucursalLocal) {
@@ -376,7 +376,6 @@ class LxVentaService implements ApplicationListener<ContextRefreshedEvent>, Even
         .whereEqualTo('sucursal', suc.nombre)
         .whereEqualTo('status', 'CERRADO')
         .addSnapshotListener(this)
-        println "Listening to firestore collection: pedidos'"
         log.debug('Listening to firestore collection: {}', 'pedidos')
     }   
 

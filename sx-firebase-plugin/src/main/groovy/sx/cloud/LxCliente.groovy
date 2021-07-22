@@ -77,11 +77,11 @@ class LxCliente {
         ]}
     }
 
-    Map toMap() {
+    Map<String, Object> toMap() {
         Map data = this.properties
         return filter(data)
     }
-    Map filter(Map data) {
+    Map<String, Object> filter(Map data) {
         data = data.findAll{ k, v -> !['class','constraints', 'errors'].contains(k) }
         return data
     }
