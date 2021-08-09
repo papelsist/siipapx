@@ -1,0 +1,20 @@
+import groovy.transform.Field
+import sx.tesoreria.MovimientoDeTesoreria
+
+@Field MovimientoDeTesoreria movimientoDeTesoreria
+
+json g.render(movimientoDeTesoreria, [excludes: ['lastUpdated','dateCreated','cuenta']]){
+    cuenta g.render(movimientoDeTesoreria.cuenta)
+    creado movimientoDeTesoreria.dateCreated.format('yyyy-MM-dd\'T\'HH:mm:ssZ')
+    modificado movimientoDeTesoreria.lastUpdated.format('yyyy-MM-dd\'T\'HH:mm:ssZ')
+    banco movimientoDeTesoreria.cuenta.descripcion
+
+}
+
+/*
+json g.render(movimientoDeCuenta, [excludes:['moneda','sucursal', 'cuenta', 'lastUpdated']]){
+    moneda movimientoDeCuenta.moneda.currencyCode
+    sucursal movimientoDeCuenta.sucursal.nombre
+    cuenta movimientoDeCuenta.cuenta.toString()
+}
+*/

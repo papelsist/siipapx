@@ -1,0 +1,23 @@
+import sx.inventario.DevolucionDeVenta
+
+model{
+    DevolucionDeVenta devolucionDeVenta
+}
+
+json g.render(devolucionDeVenta){
+    sucursal {
+        id devolucionDeVenta.sucursal.id
+        nombre devolucionDeVenta.sucursal.nombre
+    }
+    venta {
+        id devolucionDeVenta.venta.id
+        documento devolucionDeVenta.venta.documento
+        fecha devolucionDeVenta.venta.fecha
+        tipo devolucionDeVenta.venta.tipo
+        cliente {
+            id devolucionDeVenta.venta.cliente.id
+            nombre devolucionDeVenta.venta.cliente.nombre
+        }
+    }
+    factura devolucionDeVenta.venta.cuentaPorCobrar.documento
+}

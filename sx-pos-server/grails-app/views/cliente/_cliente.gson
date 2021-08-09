@@ -1,0 +1,15 @@
+import groovy.transform.Field
+import sx.core.Cliente
+
+@Field Cliente cliente
+
+json g.render(cliente, [excludes:['credito','direccion','medios', 'comentarios']]){
+    credito g.render(cliente.credito)
+    direccion g.render(cliente.direccion)
+    telefonos cliente.telefonos
+    fax cliente.fax
+    cfdiMail cliente.cfdiMail
+    cfdiValidado cliente.getCfdiValidado()?: false
+    comentarios g.render(cliente.comentarios)
+}
+

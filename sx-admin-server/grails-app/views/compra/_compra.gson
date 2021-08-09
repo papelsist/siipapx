@@ -1,0 +1,13 @@
+import sx.compras.Compra
+
+model {
+    Compra compra
+}
+
+//json g.render(compra)
+
+json g.render(compra, [excludes:['moneda','dateCreated','lastUpdated','version']]){
+    proveedor compra.proveedor.nombre
+    sucursal compra.sucursal.nombre
+    modificado compra.lastUpdated.format('yyyy-MM-dd\'T\'HH:mm:ssZ')
+}

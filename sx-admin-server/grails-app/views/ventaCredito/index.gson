@@ -1,0 +1,10 @@
+import sx.cxc.VentaCredito
+
+model {
+    Iterable<VentaCredito> ventaCreditoList
+}
+json tmpl.ventaCredito(ventaCreditoList ?: [])
+
+
+
+

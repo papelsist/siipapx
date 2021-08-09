@@ -1,0 +1,16 @@
+import groovy.transform.Field
+import sx.cxc.CobroTarjeta
+
+@Field CobroTarjeta cobroTarjeta
+
+json g.render(cobroTarjeta, [excludes:['cobro','dateCreated', 'lastUpdated']]){
+    cobro {
+        id cobroTarjeta.cobro.id
+        nombre cobroTarjeta.cobro.cliente.nombre
+        importe cobroTarjeta.cobro.importe
+    }
+    total cobroTarjeta.cobro.importe
+    tipo cobroTarjeta.visaMaster ? 'VISA_MASTER': 'AMEX'
+    subTipo cobroTarjeta.visaMaster ? cobroTarjeta.debitoCredito ? 'DEBITO' : 'CREDITO' : ''
+}
+

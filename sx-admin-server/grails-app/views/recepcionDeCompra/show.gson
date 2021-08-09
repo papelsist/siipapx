@@ -1,0 +1,25 @@
+import sx.compras.RecepcionDeCompra
+
+model {
+    RecepcionDeCompra recepcionDeCompra
+}
+
+json g.render(recepcionDeCompra, [deep:true,excludes:['partidas','proveedor']]){
+    partidas g.render(recepcionDeCompra.partidas, [deep:true, excludes:['recepcion']] )
+    proveedor {
+        id recepcionDeCompra.proveedor.id
+        nombre recepcionDeCompra.proveedor.nombre
+    }
+    compra {
+        id recepcionDeCompra.compra.id
+        folio recepcionDeCompra.compra.folio
+        comentario recepcionDeCompra.compra.comentario
+        fecha recepcionDeCompra.compra.fecha
+    }
+    sucursal  {
+        id recepcionDeCompra.sucursal.id
+        nombre recepcionDeCompra.sucursal.nombre
+    }
+}
+
+

@@ -1,0 +1,11 @@
+import sx.tesoreria.Ficha
+
+model {
+  Ficha ficha 
+}
+json g.render(ficha,[excludes:['sucursal']]){
+  sucursal {
+    id ficha.sucursal.id
+    nombre ficha.sucursal.nombre
+  } 
+}

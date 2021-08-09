@@ -1,0 +1,11 @@
+import sx.core.Clase
+
+model {
+    Clase clase
+}
+
+json g.render(clase, [excludes:['dateCreated','lastUpdated']]){
+    modificado clase.lastUpdated
+}
+
+

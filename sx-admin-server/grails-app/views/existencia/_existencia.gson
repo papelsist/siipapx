@@ -1,0 +1,17 @@
+import sx.core.Existencia
+
+model {
+    Existencia existencia
+}
+
+json g.render(existencia, [excludes:['producto','sucursal']]){
+
+    sucursal {
+        id existencia.sucursal.id
+        nombre existencia.sucursal.nombre
+    }
+    producto g.render(existencia.producto)
+    recorte 0
+    
+    
+}

@@ -1,0 +1,7 @@
+import sx.core.Sucursal
+model {
+    List<Sucursal> sucursalList
+}
+
+json tmpl.sucursal(sucursalList ?: [])
+

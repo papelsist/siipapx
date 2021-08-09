@@ -1,0 +1,20 @@
+import groovy.transform.Field
+import sx.tesoreria.CorteDeTarjeta
+
+@Field CorteDeTarjeta corteDeTarjeta
+
+json g.render(corteDeTarjeta, [excludes:['sucursal','aplicaciones','cuentaDeBanco']]){
+    sucursal {
+        id corteDeTarjeta.sucursal.id
+        nombre corteDeTarjeta.sucursal.nombre
+    }
+    cuentaDeBanco {
+        id corteDeTarjeta.cuentaDeBanco.id
+        descripcion corteDeTarjeta.cuentaDeBanco.descripcion
+    }
+    tipo corteDeTarjeta.visaMaster ? 'VISA-MASTERCARD' : 'AMEX'
+    aplicado corteDeTarjeta.getEstatus()
+    estatus corteDeTarjeta.getEstatus()
+    aplicaciones tmpl.'aplicacion'(corteDeTarjeta.aplicaciones)
+
+}

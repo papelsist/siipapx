@@ -1,0 +1,7 @@
+import sx.tesoreria.CorteCobranza
+
+model {
+    CorteCobranza corteCobranza
+}
+
+json tmpl.corteCobranza(corteCobranza)

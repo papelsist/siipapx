@@ -1,0 +1,7 @@
+import sx.crm.BonificacionMCAplicacion
+
+model {
+	BonificacionMCAplicacion bonificacionMCAplicacion
+}
+
+json tmpl.bonificacionMCAplicacion(bonificacionMCAplicacion)

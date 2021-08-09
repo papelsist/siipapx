@@ -1,0 +1,8 @@
+import sx.cxc.Juridico
+
+model {
+	Iterable<Juridico> juridicoList
+}
+
+json tmpl.juridico(juridicoList ?: [])
+

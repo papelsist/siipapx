@@ -1,0 +1,8 @@
+import sx.tesoreria.MovimientoDeCuenta
+
+model {
+	Iterable<MovimientoDeCuenta> movimientoDeCuentaList
+}
+
+json tmpl.movimientoDeCuenta(movimientoDeCuentaList ?: [])
+

@@ -1,0 +1,14 @@
+import sx.core.Cliente
+
+model {
+    Cliente cliente
+}
+
+json g.render(cliente, [deep:false, excludes:['direccion','credito', 'comentarios']]) {
+    credito g.render(cliente.credito)
+    direccion g.render(cliente.direccion)
+    comentarios g.render(cliente.comentarios)
+}
+
+
+

@@ -1,0 +1,16 @@
+import sx.inventario.MovimientoDeAlmacen
+
+model {
+    MovimientoDeAlmacen movimientoDeAlmacen
+}
+
+json g.render(movimientoDeAlmacen, [deep:true,excludes:['partidas','sucursal']]){
+    partidas g.render(movimientoDeAlmacen.partidas)
+    sucursal  {
+        id movimientoDeAlmacen.sucursal.id
+        nombre movimientoDeAlmacen.sucursal.nombre
+    }
+}
+
+
+

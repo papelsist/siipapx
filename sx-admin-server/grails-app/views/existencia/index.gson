@@ -1,0 +1,13 @@
+import sx.core.Existencia
+
+model {
+    Iterable<Existencia> existenciaList
+}
+
+json tmpl.existencia(existenciaList ?: [])
+
+
+
+
+
+

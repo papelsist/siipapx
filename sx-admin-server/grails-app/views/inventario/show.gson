@@ -1,0 +1,8 @@
+import sx.core.Inventario
+
+model {
+    Inventario inventario
+
+}
+
+json tmpl.inventario(inventario)

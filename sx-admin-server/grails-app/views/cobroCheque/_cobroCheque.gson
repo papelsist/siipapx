@@ -1,0 +1,15 @@
+import sx.cxc.CobroCheque
+
+model {
+    CobroCheque cobroCheque
+}
+json g.render(cobroCheque, [excludes:['cobro','bancoOrigen']]){
+    // cobro g.render(cobroCheque.cobro, [excludes: ['cheque','aplicaciones']])
+    bancoOrigen g.render(cobroCheque.bancoOrigen)
+    cobro {
+        id cobroCheque.cobro.id
+        nombre cobroCheque.cobro.cliente.nombre
+        importe cobroCheque.cobro.importe
+    }
+}
+

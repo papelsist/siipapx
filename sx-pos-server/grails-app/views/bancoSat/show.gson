@@ -1,0 +1,7 @@
+import sx.sat.BancoSat
+
+model {
+	BancoSat bancoSat
+}
+
+json tmpl.bancoSat(bancoSat)

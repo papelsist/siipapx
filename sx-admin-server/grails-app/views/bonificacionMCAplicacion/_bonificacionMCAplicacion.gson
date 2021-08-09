@@ -1,0 +1,7 @@
+import sx.crm.BonificacionMCAplicacion
+
+model {
+	BonificacionMCAplicacion bonificacionMCAplicacion
+}
+
+json g.render(bonificacionMCAplicacion, [resolveTemplate: false])

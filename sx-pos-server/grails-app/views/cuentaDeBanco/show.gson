@@ -1,0 +1,7 @@
+import sx.tesoreria.CuentaDeBanco
+
+model {
+	CuentaDeBanco cuentaDeBanco
+}
+
+json tmpl.cuentaDeBanco(cuentaDeBanco)

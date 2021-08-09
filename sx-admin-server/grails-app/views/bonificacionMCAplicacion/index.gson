@@ -1,0 +1,8 @@
+import sx.crm.BonificacionMCAplicacion
+
+model {
+	Iterable<BonificacionMCAplicacion> bonificacionMCAplicacionList
+}
+
+json tmpl.bonificacionMCAplicacion(bonificacionMCAplicacionList ?: [])
+

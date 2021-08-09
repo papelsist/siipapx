@@ -1,0 +1,16 @@
+import sx.core.Inventario
+
+model{
+    Inventario inventario
+}
+
+json {
+
+    id inventario.id
+    documento inventario.documento
+    tipo inventario.tipo
+    fecha inventario.fecha
+    clave inventario.producto.clave
+    descripcion inventario.producto.descripcion
+    cantidad  inventario.cantidad
+}

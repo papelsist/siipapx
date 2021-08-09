@@ -1,0 +1,7 @@
+import sx.cxc.Juridico
+
+model {
+	Juridico juridico
+}
+
+json tmpl.juridico(juridico)

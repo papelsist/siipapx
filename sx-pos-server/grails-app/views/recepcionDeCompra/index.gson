@@ -1,0 +1,8 @@
+import sx.compras.RecepcionDeCompra
+
+model {
+    Iterable<RecepcionDeCompra> recepcionDeCompraList
+}
+
+json tmpl.recepcionDeCompra(recepcionDeCompraList ?: [])
+

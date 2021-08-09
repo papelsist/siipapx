@@ -1,0 +1,7 @@
+import sx.logistica.FacturistaDeEmbarque
+
+model {
+	FacturistaDeEmbarque facturistaDeEmbarque
+}
+
+json g.render(facturistaDeEmbarque)

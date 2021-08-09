@@ -1,0 +1,8 @@
+import sx.contabilidad.SatCuenta
+
+model {
+    List<SatCuenta> satCuentaList
+}
+
+json tmpl.satCuenta(satCuentaList ?: [])
+

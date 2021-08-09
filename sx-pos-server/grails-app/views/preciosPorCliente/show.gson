@@ -1,0 +1,6 @@
+import sx.core.PreciosPorCliente
+
+model {
+    PreciosPorCliente preciosPorCliente
+}
+json tmpl.preciosPorCliente(preciosPorCliente)

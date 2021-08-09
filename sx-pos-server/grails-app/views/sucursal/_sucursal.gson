@@ -1,0 +1,9 @@
+import sx.core.Sucursal
+
+model {
+    Sucursal sucursal
+}
+
+json g.render(sucursal, [includes:['id', 'clave', 'nombre', 'activa']])
+
+

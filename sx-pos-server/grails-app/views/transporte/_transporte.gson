@@ -1,0 +1,7 @@
+import sx.logistica.Transporte
+
+model {
+	transporte Transporte
+}
+
+//json g.render(transporte)

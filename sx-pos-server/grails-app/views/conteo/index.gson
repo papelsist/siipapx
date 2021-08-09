@@ -1,0 +1,8 @@
+import sx.inventario.Conteo
+
+model{
+    Iterable<Conteo> conteoList
+
+}
+
+json tmpl.conteo(conteoList ?: [])

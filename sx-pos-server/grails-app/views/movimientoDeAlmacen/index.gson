@@ -1,0 +1,15 @@
+import sx.inventario.MovimientoDeAlmacen
+
+
+model {
+    Iterable<MovimientoDeAlmacen> movimientoDeAlmacenList
+}
+
+
+json tmpl.movimientoDeAlmacen(movimientoDeAlmacenList ?: [])
+
+
+
+
+
+

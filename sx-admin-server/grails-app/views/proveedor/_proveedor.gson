@@ -1,0 +1,9 @@
+import sx.core.Proveedor
+
+model {
+    Proveedor proveedor
+}
+
+json g.render(proveedor, [excludes: ['direccion']]){
+
+}

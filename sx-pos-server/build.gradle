@@ -1,0 +1,66 @@
+apply plugin: 'project-report'
+apply plugin:"org.grails.grails-gsp"
+
+grails {
+    plugins {
+      compile project(':sx-core-plugin')
+      compile project(':sx-firebase-plugin')
+    }
+}
+
+dependencies {
+    //compile project(':sx-core-plugin')
+    compile 'org.grails.plugins:spring-security-core:3.2.0'
+    compile "org.grails.plugins:spring-security-rest:2.0.0.M2"
+
+    compile 'lx.cfdi:v33:1.1.2'
+    // compile 'org.grails.plugins:grails-cxf-client:3.0.3' //This line
+    compile 'sx.cfdi.providers:edicom:1.0.4'
+    compile 'org.apache.commons:commons-compress:1.15'
+    compile 'net.glxn:qrgen:1.2'
+    compile 'org.grails.plugins:jasper:2.1.0.RC1'
+    compile 'org.eclipse.jdt.core.compiler:ecj:4.4'
+
+    // Temporal
+    compile "org.grails.plugins:gsp"
+    runtime 'org.grails.plugins:grails-console:2.1.1'
+    // compile 'org.grails.plugins:asset-pipeline:3.2.1'
+    compile 'org.grails.plugins:mail:2.0.0'
+    compile 'org.grails.plugins:quartz:2.0.13'
+    compile 'com.github.groovy-wslite:groovy-wslite:1.1.2'
+
+
+}
+/*
+bootRun {
+    
+    // systemProperties  System.properties
+    
+
+    jvmArgs('-Dspring.output.ansi.enabled=always')
+    jvmArgs('-Xmx1024m')
+    // addResources = true
+    String springProfilesActive = 'spring.profiles.active'
+    systemProperty springProfilesActive, System.getProperty(springProfilesActive)
+    systemProperties System.properties
+}
+*/
+war {
+    String env = System.getProperty('grails.env') ?: 'prod'
+    war.baseName = "sx-pos-server-${env.substring(0,4)}"
+    war.version = ''
+}
+springBoot {
+    executable = true
+}
+
+task buildConf() {
+    doLast {
+        String fileName = war.archiveName.replaceAll(".war", ".conf")
+        File file = file("build/libs/${fileName}")
+        file.append("JAVA_OPTS=-Xmx2048M")
+        file.append("\nRUN_ARGS=\"--JDBC_CONNECTION_STRING=localhost/siipapx_oficinas --server.port=3036\"")
+    }// url: jdbc:mysql://10.10.1.229:3306/siipapx_tacuba?autoReconnect=true
+}
+
+war.finalizedBy(buildConf)

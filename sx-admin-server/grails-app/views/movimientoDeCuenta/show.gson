@@ -1,0 +1,7 @@
+import sx.tesoreria.MovimientoDeCuenta
+
+model {
+	MovimientoDeCuenta movimientoDeCuenta
+}
+
+json tmpl.movimientoDeCuenta(movimientoDeCuenta)

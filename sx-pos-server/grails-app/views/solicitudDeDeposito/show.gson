@@ -1,0 +1,27 @@
+import sx.cxc.SolicitudDeDeposito
+
+model {
+    SolicitudDeDeposito solicitudDeDeposito
+}
+
+json g.render(solicitudDeDeposito, [excludes:['sucursal','cliente']]){
+    sucursal {
+      id solicitudDeDeposito.sucursal.id
+      nombre solicitudDeDeposito.sucursal.nombre
+    }
+    cliente {
+      id solicitudDeDeposito.cliente.id
+      nombre solicitudDeDeposito.cliente.nombre
+    }
+    cuenta {
+        id solicitudDeDeposito.cuenta.id
+        numero solicitudDeDeposito.cuenta.numero
+        descripcion solicitudDeDeposito.cuenta.descripcion
+    }
+    banco {
+        id solicitudDeDeposito.banco.id
+        nombre solicitudDeDeposito.banco.nombre
+    }
+}
+
+

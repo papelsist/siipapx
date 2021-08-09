@@ -1,0 +1,12 @@
+import sx.logistica.Envio
+
+model {
+    Envio envio
+}
+
+json g.render(envio, [deep:true,excludes:['partidas']]){
+    partidas g.render(envio.partidas)
+}
+
+
+

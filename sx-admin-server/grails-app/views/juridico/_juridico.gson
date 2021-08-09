@@ -1,0 +1,11 @@
+import sx.cxc.Juridico
+
+model {
+	Juridico juridico
+}
+
+json g.render(juridico, [excludes: ['cxc'], resolveTemplate: false]) {
+    cxc g.render(juridico.cxc)
+    despacho g.render(juridico.despacho)
+
+}

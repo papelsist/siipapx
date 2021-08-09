@@ -1,0 +1,18 @@
+import sx.cxc.AplicacionDeCobro
+
+model {
+    AplicacionDeCobro aplicacionDeCobro
+}
+json g.render(aplicacionDeCobro, [excludes:['cuentaPorCobrar']]){
+    cuentaPorCobrar g.render(aplicacionDeCobro.cuentaPorCobrar)
+    sucursal aplicacionDeCobro.cuentaPorCobrar.sucursal.nombre
+    fechaDocumento aplicacionDeCobro.cuentaPorCobrar.fecha
+    serieDocumento aplicacionDeCobro.cuentaPorCobrar.tipoDocumento
+    folioDocumento aplicacionDeCobro.cuentaPorCobrar.documento
+    totalDocumento aplicacionDeCobro.cuentaPorCobrar.total
+    pagosDocumento aplicacionDeCobro.cuentaPorCobrar.pagos
+    saldoDocumento aplicacionDeCobro.cuentaPorCobrar.saldo
+    uuidDocumento aplicacionDeCobro.cuentaPorCobrar.uuid
+    
+}
+

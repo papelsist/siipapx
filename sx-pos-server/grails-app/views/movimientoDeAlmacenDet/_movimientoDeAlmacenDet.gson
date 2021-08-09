@@ -1,0 +1,13 @@
+import sx.inventario.MovimientoDeAlmacenDet
+
+model {
+    MovimientoDeAlmacenDet movimientoDeAlmacenDet
+}
+
+json g.render(movimientoDeAlmacenDet, [excludes:['producto']]){
+    producto {
+        id movimientoDeAlmacenDet.producto.id
+        clave movimientoDeAlmacenDet.producto.clave
+        descripcion movimientoDeAlmacenDet.producto.descripcion
+    }
+}

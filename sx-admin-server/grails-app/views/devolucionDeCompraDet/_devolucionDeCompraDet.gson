@@ -1,0 +1,13 @@
+import sx.compras.DevolucionDeCompraDet
+
+model {
+    DevolucionDeCompraDet devolucionDeCompraDet
+}
+
+json g.render(devolucionDeCompraDet, [excludes:['producto']]){
+    producto {
+        id devolucionDeCompraDet.producto.id
+        clave devolucionDeCompraDet.producto.clave
+        descripcion devolucionDeCompraDet.producto.descripcion
+    }
+}

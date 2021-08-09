@@ -1,0 +1,17 @@
+import sx.cxc.Cobro
+
+model {
+    Cobro cobro
+}
+
+json g.render(cobro, [deep:true,excludes:['sucursal','aplicaciones','moneda']]){
+    sucursal  {
+        id cobro.sucursal.id
+        nombre cobro.sucursal.nombre
+    }
+     moneda cobro.moneda.currencyCode
+
+}
+
+
+

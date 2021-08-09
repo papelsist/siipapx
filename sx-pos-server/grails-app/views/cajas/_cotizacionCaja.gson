@@ -1,0 +1,16 @@
+import sx.cajas.CotizacionCaja
+
+model{
+    CotizacionCaja cotizacionCaja
+}
+
+json g.render(cotizacionCaja,[excludes: ['producto'], resolveTemplate: false]){  
+    producto {
+            id cotizacionCaja.producto?.id
+            clave cotizacionCaja.producto?.clave
+            descripcion cotizacionCaja.producto?.descripcion
+            kilos cotizacionCaja.producto?.kilos
+     }
+}
+
+

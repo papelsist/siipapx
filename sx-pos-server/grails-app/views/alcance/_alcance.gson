@@ -1,0 +1,10 @@
+import sx.compras.Alcance
+
+model{
+    Alcance alcance
+}
+json g.render(alcance) {
+    porPedir alcance.getPorPedir()
+    alcanceMasPedido alcance.getAlcanceMasPedido()
+    porPedirKilos alcance.getPorPedirKilos()
+}

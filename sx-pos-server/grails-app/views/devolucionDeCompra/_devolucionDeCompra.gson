@@ -1,0 +1,25 @@
+import sx.compras.DevolucionDeCompra
+
+model{
+    DevolucionDeCompra devolucionDeCompra
+}
+/*
+json {
+	tipo 'TEST'
+}
+*/
+
+json g.render(devolucionDeCompra, [excludes:['sucursal','proveedor', 'recepcionDeCompra','partidas'] ]){
+    proveedor {
+        id devolucionDeCompra.proveedor.id
+        nombre devolucionDeCompra.proveedor.nombre
+    }
+    sucursal {
+        id devolucionDeCompra.sucursal.id
+        nombre devolucionDeCompra.sucursal.nombre
+    }
+
+}
+
+
+

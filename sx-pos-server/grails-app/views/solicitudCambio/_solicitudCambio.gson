@@ -1,0 +1,13 @@
+import sx.logistica.SolicitudCambio
+
+model {
+	SolicitudCambio solicitudCambio
+}
+
+json g.render(solicitudCambio, [excludes: ['usuario','sucursal','autorizo','atendio'], resolveTemplate: false]){  
+
+    usuario solicitudCambio.usuario?.nombres
+    sucursal solicitudCambio.sucursal?.nombre
+    autorizo solicitudCambio.autorizo?.nombres
+    atendio solicitudCambio.atendio?.nombres
+}

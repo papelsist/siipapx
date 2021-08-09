@@ -1,0 +1,13 @@
+import sx.core.AppConfig
+
+model {
+  AppConfig appConfig
+}
+
+json g.render(appConfig, [excludes:['sucursal']]) {
+  sucursal {
+    id appConfig.sucursal.id
+    clave appConfig.sucursal.clave
+    nombre appConfig.sucursal.nombre
+  }
+}

@@ -1,0 +1,12 @@
+import sx.cxc.CuentaPorCobrar
+
+model {
+    CuentaPorCobrar cuentaPorCobrar
+}
+json g.render(cuentaPorCobrar, [excludes:['moneda','dateCreated','lastUpdated','cliente']]){
+    cliente g.render(cuentaPorCobrar.cliente, [includes: ['id', 'nombre', 'rfc']])
+    moneda cuentaPorCobrar.moneda.currencyCode
+    saldo cuentaPorCobrar.total - cuentaPorCobrar.pagos
+    cfdi g.render(cuentaPorCobrar.cfdi)
+}
+

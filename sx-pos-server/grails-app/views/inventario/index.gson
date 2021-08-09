@@ -1,0 +1,7 @@
+import sx.core.Inventario
+
+model{
+    Iterable<Inventario> inventarioList
+}
+
+json tmpl.inventario(inventarioList ?: [])

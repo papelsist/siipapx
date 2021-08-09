@@ -1,0 +1,8 @@
+import sx.inventario.DevolucionDeVenta
+
+model{
+    Iterable<DevolucionDeVenta> devolucionDeVentaList
+
+}
+
+json tmpl.devolucionDeVenta(devolucionDeVentaList ?: [])

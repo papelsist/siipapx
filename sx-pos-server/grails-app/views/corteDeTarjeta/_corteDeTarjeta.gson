@@ -1,0 +1,11 @@
+import groovy.transform.Field
+import sx.tesoreria.CorteDeTarjeta
+
+@Field CorteDeTarjeta corteDeTarjeta
+
+json g.render(corteDeTarjeta, [excludes:['sucursal']]){
+    sucursal {
+        id corteDeTarjeta.sucursal.id
+        nombre corteDeTarjeta.sucursal.nombre
+    }
+}

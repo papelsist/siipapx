@@ -1,0 +1,16 @@
+import sx.inventario.DevolucionDeVenta
+
+model {
+    DevolucionDeVenta devolucionDeVenta
+}
+
+json g.render(devolucionDeVenta, [deep:true,excludes:['partidas','sucursal']]){
+    partidas g.render(devolucionDeVenta.partidas)
+    sucursal  {
+        id devolucionDeVenta.sucursal.id
+        nombre devolucionDeVenta.sucursal.nombre
+    }
+}
+
+
+

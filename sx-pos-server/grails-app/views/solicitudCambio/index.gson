@@ -1,0 +1,8 @@
+import sx.logistica.SolicitudCambio
+
+model {
+	Iterable<SolicitudCambio> solicitudCambioList
+}
+
+json tmpl.SolicitudCambio(solicitudCambioList ?: [])
+

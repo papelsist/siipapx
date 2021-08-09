@@ -1,0 +1,15 @@
+import sx.cxc.NotaDeCargo
+
+model {
+    NotaDeCargo notaDeCargo
+}
+
+json g.render(notaDeCargo, [excludes:['dateCreated','lastUpdated','moneda','cliente'] ]){
+    modificado notaDeCargo.lastUpdated.format('yyyy-MM-dd\'T\'HH:mm:ssZ')
+    creado notaDeCargo.dateCreated.format('yyyy-MM-dd\'T\'HH:mm:ssZ')
+    moneda notaDeCargo.moneda.currencyCode
+    cliente {
+        id notaDeCargo.cliente.id
+        nombre notaDeCargo.cliente.nombre
+    }
+}

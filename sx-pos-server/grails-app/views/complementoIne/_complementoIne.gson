@@ -1,0 +1,15 @@
+import groovy.transform.Field
+import sx.cfdi.ComplementoIne
+
+
+@Field ComplementoIne complementoIne
+
+json g.render(complementoIne, [excludes:['venta']]){
+    venta {
+        id complementoIne.venta.id
+        cliente complementoIne.venta.cliente.id
+        documento complementoIne.venta.documento
+        tipo complementoIne.venta.tipo
+    }
+}
+

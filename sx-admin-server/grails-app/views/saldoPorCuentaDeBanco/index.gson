@@ -1,0 +1,8 @@
+import sx.tesoreria.SaldoPorCuentaDeBanco
+
+model {
+	Iterable<SaldoPorCuentaDeBanco> saldoPorCuentaDeBancoList
+}
+
+json tmpl.saldoPorCuentaDeBanco(saldoPorCuentaDeBancoList ?: [])
+

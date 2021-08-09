@@ -1,0 +1,14 @@
+import sx.inventario.SectorDet
+
+model {
+    SectorDet sectorDet
+}
+
+json g.render(sectorDet, [excludes:['producto']]){
+  producto {
+        id sectorDet.producto.id
+        clave sectorDet.producto.clave
+        descripcion sectorDet.producto.descripcion
+        kilos sectorDet.producto.kilos
+    }
+}

@@ -1,0 +1,73 @@
+import sx.cxc.Cobro
+
+model {
+    Cobro cobro
+}
+/*
+json {
+    id cobro.id
+    cliente g.render(cobro.cliente, [includes: ['id', 'nombre', 'rfc']])
+    nombre cobro.cliente.nombre
+    sucursal {
+        id cobro.sucursal.id
+        nombre cobro.sucursal.nombre
+    }
+    sucursalNombre cobro.sucursal.nombre
+    fecha cobro.fecha
+    formaDePago cobro.formaDePago
+    referencia cobro.referencia
+    moneda cobro.moneda.currencyCode
+    importe cobro.importe
+    aplicado cobro.aplicado
+    if(cobro.cfdi) {
+        recibo cobro.cfdi.uuid
+    }
+    disponible cobro.getDisponible()
+    if(cobro.cheque) {
+        cheque g.render(cobro.cheque)
+        bancoOrigen cobro.cheque.bancoOrigen.nombre
+    }
+    if(cobro.deposito) {
+        deposito g.render(cobro.deposito)
+    }
+    if(cobro.transferencia) {
+        transferencia g.render(cobro.transferencia)
+    }
+    if(cobro.tarjeta) {
+        tarjeta g.render(cobro.tarjeta)
+    }
+    saldo cobro.saldo
+    ingreso cobro.getIngreso()
+}
+*/
+
+
+json g.render(cobro, [excludes:['moneda','cliente', 'sucursal', 'aplicaciones']]){
+    cliente g.render(cobro.cliente, [includes: ['id', 'nombre', 'rfc']])
+    nombre cobro.cliente.nombre
+    moneda cobro.moneda.currencyCode
+    disponible cobro.getDisponible()
+    sucursal {
+        id cobro.sucursal.id
+        nombre cobro.sucursal.nombre
+    }
+    sucursalNombre cobro.sucursal.nombre
+    if(cobro.cheque) {
+        cheque g.render(cobro.cheque)
+        bancoOrigen cobro.cheque.bancoOrigen.nombre
+    }
+    if(cobro.deposito) {
+        deposito g.render(cobro.deposito)
+    }
+    if(cobro.transferencia) {
+        transferencia g.render(cobro.transferencia)
+    }
+    if(cobro.tarjeta) {
+        tarjeta g.render(cobro.tarjeta)
+    }
+    ingreso cobro.getIngreso()
+    if(cobro.cfdi) {
+        recibo cobro.cfdi.uuid
+    }
+
+}

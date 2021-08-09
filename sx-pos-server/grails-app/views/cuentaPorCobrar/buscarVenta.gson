@@ -1,0 +1,36 @@
+import groovy.transform.Field
+import sx.core.Venta
+
+@Field Venta venta
+
+json g.render(venta, [deep: false, excludes:['moneda','partidas']]) {
+    cliente g.render(venta.cliente)
+    moneda venta.moneda.currencyCode
+    partidas g.render(venta.partidas, [deep:true, excludes:['venta','socio']] )
+    if(venta.envio) {
+        envio {
+            id venta.envio.id
+            direccion g.render(venta.envio.direccion)
+        }
+    }
+    if(venta.cuentaPorCobrar){
+        cuentaPorCobrar {
+            id venta.cuentaPorCobrar.id
+            uuid venta.cuentaPorCobrar.uuid
+            cfdi g.render(venta.cuentaPorCobrar.cfdi)
+            saldo venta.cuentaPorCobrar.saldo
+            pagos venta.cuentaPorCobrar.pagos
+            documento venta.cuentaPorCobrar.documento
+            tipo venta.cuentaPorCobrar.tipo
+        }
+    }
+    if (venta.socio) {
+        socio {
+            id venta.socio.id
+            nombre venta.socio.nombre
+        }
+    }
+    // envio g.render(venta.envio, [excludes: ['venta']])
+}
+
+

@@ -1,0 +1,13 @@
+import sx.inventario.DevolucionDeVentaDet
+
+model {
+    DevolucionDeVentaDet devolucionDeVentaDet
+}
+
+json g.render(devolucionDeVentaDet){
+    producto {
+        id devolucionDeVentaDet.producto.id
+        clave devolucionDeVentaDet.producto.clave
+        descripcion devolucionDeVentaDet.producto.descripcion
+    }
+}

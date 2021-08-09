@@ -1,0 +1,13 @@
+import sx.tesoreria.MovimientoDeCuenta
+
+model {
+	MovimientoDeCuenta movimientoDeCuenta
+}
+
+/*
+json g.render(movimientoDeCuenta, [excludes:['moneda','sucursal', 'cuenta', 'lastUpdated']]){
+    moneda movimientoDeCuenta.moneda.currencyCode
+    sucursal movimientoDeCuenta.sucursal.nombre
+    cuenta movimientoDeCuenta.cuenta.toString()
+}
+*/

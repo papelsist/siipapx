@@ -1,0 +1,15 @@
+import sx.compras.Compra
+import sx.compras.CompraDet
+
+model {
+    Compra compra
+}
+
+//json tmpl.compra(compra)
+
+json g.render(compra, [deep:true,excludes:['moneda','dateCreated','lastUpdated','partidas','sw2']]){
+	partidas g.render(compra.partidas)
+	// partidas g.render(compra.partidas, [deep: false, excludes:['compra','lastUpdated']] )
+}
+
+

@@ -1,0 +1,8 @@
+import sx.core.Marca
+
+model {
+	Iterable<Marca> marcaList
+}
+
+json tmpl.marca(marcaList ?: [])
+

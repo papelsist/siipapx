@@ -1,0 +1,9 @@
+import sx.tesoreria.CuentaDeBanco
+
+model {
+	CuentaDeBanco cuentaDeBanco
+}
+
+json g.render(cuentaDeBanco, [deep:true, excludes:['moneda','dateCreated','lastUpdated']]){
+    moneda cuentaDeBanco.moneda.currencyCode
+}

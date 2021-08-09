@@ -1,0 +1,9 @@
+apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+repositories {
+    jcenter()
+}
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.11'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
+}

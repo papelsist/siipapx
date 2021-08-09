@@ -1,0 +1,17 @@
+import sx.inventario.Conteo
+
+model{
+    Conteo conteo
+}
+
+json g.render(conteo, [excludes: ['sector']]){
+    sucursal {
+        id conteo.sucursal.id
+        nombre conteo.sucursal.nombre
+    }
+    sector {
+      id conteo.sector.id
+      sectorFolio conteo.sector.sectorFolio
+      comentario conteo.sector.comentario
+    }
+}

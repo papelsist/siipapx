@@ -1,0 +1,11 @@
+import sx.core.Marca
+
+model {
+	Marca marca
+}
+
+json g.render(marca, [excludes:['dateCreated','lastUpdated']]){
+	modificado marca.lastUpdated
+}
+
+

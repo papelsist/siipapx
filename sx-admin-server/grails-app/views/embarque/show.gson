@@ -1,0 +1,16 @@
+import sx.logistica.Embarque
+
+model {
+    Embarque embarque
+}
+
+json g.render(embarque, [deep:true,excludes:['sucursal']]){
+    // partidas g.render(embarque.partidas)
+    sucursal  {
+        id embarque.sucursal.id
+        nombre embarque.sucursal.nombre
+    }
+}
+
+
+

@@ -1,0 +1,9 @@
+import sx.core.PreciosPorClienteDet
+
+model {
+    PreciosPorClienteDet preciosPorClienteDet
+}
+
+json g.render(preciosPorClienteDet, [excludes: ['moneda']]){
+
+}

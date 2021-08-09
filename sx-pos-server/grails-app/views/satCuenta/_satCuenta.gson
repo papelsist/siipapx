@@ -1,0 +1,9 @@
+import sx.contabilidad.SatCuenta
+
+model {
+    SatCuenta satCuenta
+}
+
+json g.render(satCuenta, [excludes:['tipo']])
+
+

@@ -1,0 +1,8 @@
+import sx.inventario.Sector
+
+model{
+    Iterable<Sector> sectorList
+
+}
+
+json tmpl.sector(sectorList ?: [])

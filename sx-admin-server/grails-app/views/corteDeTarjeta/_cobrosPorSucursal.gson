@@ -1,0 +1,27 @@
+import groovy.transform.Field
+import sx.tesoreria.CobrosPorSucursal
+
+// @Field CobrosPorSucursal cobrosPorSucursal
+model {
+    CobrosPorSucursal cobrosPorSucursal
+}
+
+json {
+    sucursal {
+        id cobrosPorSucursal.sucursal.id
+        nombre cobrosPorSucursal.sucursal.nombre
+    }
+    cobros g.render(cobrosPorSucursal.cobros)
+    fecha cobrosPorSucursal.fecha
+}
+
+/*
+json g.render(corteDeTarjeta, [excludes:['sucursal']]){
+    sucursal {
+        id corteDeTarjeta.sucursal.id
+        nombre corteDeTarjeta.sucursal.nombre
+    }
+}
+*/
+
+

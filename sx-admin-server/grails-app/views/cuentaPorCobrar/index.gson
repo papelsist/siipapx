@@ -1,0 +1,10 @@
+import sx.cxc.CuentaPorCobrar
+
+model {
+    Iterable<CuentaPorCobrar> cuentaPorCobrarList
+}
+json tmpl.cuentaPorCobrar(cuentaPorCobrarList ?: [])
+
+
+
+

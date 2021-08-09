@@ -1,0 +1,7 @@
+import sx.compras.DevolucionDeCompra
+
+model{
+    Iterable<DevolucionDeCompra> devolucionDeCompraList
+}
+
+json tmpl.devolucionDeCompra(devolucionDeCompraList ?: [])

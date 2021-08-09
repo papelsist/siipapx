@@ -1,0 +1,18 @@
+import sx.core.VentaDet
+
+model {
+    VentaDet ventaDet
+}
+
+json g.render(ventaDet){
+	
+	producto {
+		id ventaDet.producto.id
+		clave ventaDet.producto.clave
+		descripcion ventaDet.producto.descripcion
+	}
+	venta {
+		documento ventaDet.venta.documento
+		fecha ventaDet.venta.fecha
+	}
+}

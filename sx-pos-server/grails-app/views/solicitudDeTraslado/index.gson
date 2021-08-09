@@ -1,0 +1,8 @@
+import sx.inventario.SolicitudDeTraslado
+
+model {
+    Iterable<SolicitudDeTraslado> solicitudDeTrasladoList
+}
+
+json tmpl.solicitudDeTraslado(solicitudDeTrasladoList ?: [])
+

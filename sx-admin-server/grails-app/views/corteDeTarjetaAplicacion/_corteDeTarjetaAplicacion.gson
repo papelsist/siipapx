@@ -1,0 +1,6 @@
+import groovy.transform.Field
+import sx.tesoreria.CorteDeTarjetaAplicacion
+
+@Field CorteDeTarjetaAplicacion corteDeTarjetaAplicacion
+
+json g.render(corteDeTarjetaAplicacion)

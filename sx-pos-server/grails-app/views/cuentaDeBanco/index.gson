@@ -1,0 +1,8 @@
+import sx.tesoreria.CuentaDeBanco
+
+model {
+	Iterable<CuentaDeBanco> cuentaDeBancoList
+}
+
+json tmpl.cuentaDeBanco(cuentaDeBancoList ?: [])
+

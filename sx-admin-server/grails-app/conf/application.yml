@@ -1,0 +1,193 @@
+---
+grails:
+    profile: rest-api
+    codegen:
+        defaultPackage: sx.admin.server
+    spring:
+        transactionManagement:
+            proxies: false
+    gorm:
+        reactor:
+            # Whether to translate GORM events into Reactor events
+            # Disabled by default for performance reasons
+            events: false
+info:
+    app:
+        name: '@info.app.name@'
+        version: '@info.app.version@'
+        grailsVersion: '@info.app.grailsVersion@'
+spring:
+    main:
+        banner-mode: "off"
+    groovy:
+        template:
+            check-template-location: false
+
+# Spring Actuator Endpoints are Disabled by Default
+endpoints:
+    enabled: false
+    jmx:
+        enabled: true
+
+---
+grails:
+    mime:
+        disable:
+            accept:
+                header:
+                    userAgents:
+                        - Gecko
+                        - WebKit
+                        - Presto
+                        - Trident
+        types:
+            json:
+              - application/json
+              - text/json   
+            hal:
+              - application/hal+json
+              - application/hal+xml  
+            xml:
+              - text/xml
+              - application/xml                                 
+            atom: application/atom+xml
+            css: text/css
+            csv: text/csv
+            js: text/javascript
+            rss: application/rss+xml
+            text: text/plain
+            all: '*/*'            
+    urlmapping:
+        cache:
+            maxsize: 1000
+    controllers:
+        defaultScope: singleton
+    converters:
+        encoding: UTF-8
+#    views:
+#        json:
+#            compileStatic: true
+#        gsp:
+#            encoding: UTF-8
+#            htmlcodec: xml
+#            codecs:
+#                expression: html
+#                scriptlets: html
+#                taglib: none
+#                staticparts: none
+
+---
+hibernate:
+    cache:
+        queries: false
+        use_second_level_cache: false
+        use_query_cache: false
+dataSource:
+    pooled: true
+    dbCreate: ''
+    driverClassName: com.mysql.jdbc.Driver
+    dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+environments:
+    development:
+        dataSource:
+            dbCreate: none
+            #url: jdbc:mysql://localhost/siipapx_dev?autoReconnect=false
+            #url: jdbc:mysql://10.10.1.229/siipapx_dev?autoReconnect=true
+            #url: jdbc:mysql://10.10.1.225/qro_ofi?autoReconnect=false
+            #url: jdbc:mysql://localhost/siipapx_queretaro?autoReconnect=true
+            #url: jdbc:mysql://10.10.1.229/siipapx_queretaro_ofi?autoReconnect=true
+            url: jdbc:mysql://10.10.1.229/siipapx?autoReconnect=true
+            username: root
+            password: sys
+    test:
+        dataSource:
+            dbCreate: create-drop
+            pooled: true
+            jmxExport: true
+            driverClassName: org.h2.Driver
+            url: jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+            username: sa
+            password:
+    production:
+        dataSource:
+            dbCreate: none
+            url: jdbc:mysql://10.10.1.229/siipapx?autoReconnect=false
+            username: root
+            password: sys
+            properties:
+                maxActive: 10
+                maxIdle: 10
+                minIdle: 3
+                initialSize: 3
+                minEvictableIdleTimeMillis: 1800000
+                timeBetweenEvictionRunsMillis: 1800000
+                numTestsPerEvictionRun: 3
+                testOnBorrow: true
+                testWhileIdle: true
+                testOnReturn: true
+                maxWait: 10000
+                validationQuery: 'SELECT 1'
+                validationQueryTimeout: 3
+                validationInterval: 15000
+    queretaro:
+        dataSource:
+            dbCreate: update
+            url: jdbc:mysql://10.10.9.1/siipapx?autoReconnect=false
+            #url: jdbc:mysql://localhost/siipapx_oficinas?autoReconnect=false
+            username: root
+            password: sys
+            properties:
+                maxActive: 10
+                maxIdle: 10
+                minIdle: 3
+                initialSize: 3
+                minEvictableIdleTimeMillis: 1800000
+                timeBetweenEvictionRunsMillis: 1800000
+                numTestsPerEvictionRun: 3
+                testOnBorrow: true
+                testWhileIdle: true
+                testOnReturn: true
+                maxWait: 10000
+                validationQuery: 'SELECT 1'
+                validationQueryTimeout: 3
+                validationInterval: 15000
+    certificacion:
+            dataSource:
+                dbCreate: none
+                url: jdbc:mysql://localhost/siipapx_oficinas?autoReconnect=true
+                username: root
+                password: sys
+---
+server:
+  port: 9095
+  contextPath: /siipapx
+---
+grails:
+    cors:
+        enabled: true
+---
+environments:
+    certificacion:
+        server:
+            port: 9199
+---
+environments:
+  development:
+    siipapx:
+      firebase:
+        projectId: siipapx-436ce
+        url: https://siipapx-436ce.firebaseio.com
+        bucket: siipapx-436ce.appspot.com
+  production:
+    siipapx:
+      firebase:
+        projectId: siipapx-51354
+        url: https://siipapx-51354.firebaseio.com
+        bucket: siipapx-51354.appspot.com
+  certificacion:
+    siipapx:
+      firebase:
+        projectId: siipapx-436ce
+        url: https://siipapx-436ce.firebaseio.com
+        bucket: siipapx-436ce.appspot.com
+---

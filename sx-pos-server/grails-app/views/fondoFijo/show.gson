@@ -1,0 +1,7 @@
+import sx.tesoreria.FondoFijo
+
+model {
+    FondoFijo fondoFijo
+}
+
+json tmpl.fondoFijo(fondoFijo)

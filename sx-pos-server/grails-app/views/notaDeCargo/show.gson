@@ -1,0 +1,6 @@
+import sx.cxc.NotaDeCargo
+
+model {
+    NotaDeCargo notaDeCargo
+}
+json tmpl.notaDeCargo(notaDeCargo)

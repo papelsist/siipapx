@@ -1,0 +1,7 @@
+import sx.sat.CuentaSat
+
+model {
+	CuentaSat cuentaSat
+}
+
+json g.render(cuentaSat)

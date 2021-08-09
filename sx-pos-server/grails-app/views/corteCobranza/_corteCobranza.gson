@@ -1,0 +1,6 @@
+import sx.tesoreria.CorteCobranza
+
+model {
+    CorteCobranza corteCobranza
+}
+json g.render(corteCobranza)

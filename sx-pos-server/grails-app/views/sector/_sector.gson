@@ -1,0 +1,12 @@
+import sx.inventario.Sector
+
+model{
+    Sector sector
+}
+
+json g.render(sector,[excludes: ['sucursal']]){
+    sucursal {
+        id sector.sucursal.id
+        nombre sector.sucursal.nombre
+    }
+}

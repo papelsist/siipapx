@@ -1,0 +1,13 @@
+import sx.compras.Compra
+
+model {
+    Compra compra
+}
+
+//json g.render(compra)
+
+json g.render(compra, [excludes:['moneda','version']]){
+    proveedor compra.proveedor.nombre
+    sucursal compra.sucursal.nombre
+    // pendientes compra.pendientes()
+}

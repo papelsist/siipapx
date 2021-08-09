@@ -1,0 +1,12 @@
+import sx.inventario.Transformacion
+
+model {
+    Transformacion transformacion
+}
+
+json g.render(transformacion,[excludes:['sucursal'] ]) {
+    sucursal {
+      id transformacion.sucursal.id
+      nombre: transformacion.sucursal.nombre
+    }
+}

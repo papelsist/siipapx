@@ -1,0 +1,7 @@
+import sx.core.Clase
+
+model {
+	Clase clase
+}
+
+json tmpl.clase(clase)

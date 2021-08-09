@@ -1,0 +1,7 @@
+import sx.core.Marca
+
+model {
+	Marca marca
+}
+
+json tmpl.marca(marca)

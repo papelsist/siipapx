@@ -1,0 +1,14 @@
+import sx.inventario.ConteoDet
+
+model {
+    ConteoDet conteoDet
+}
+
+json g.render(conteoDet, [excludes:['producto']]){
+  producto {
+        id conteoDet.producto.id
+        clave conteoDet.producto.clave
+        descripcion conteoDet.producto.descripcion
+        kilos conteoDet.producto.kilos
+    }
+}

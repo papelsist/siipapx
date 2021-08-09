@@ -1,0 +1,19 @@
+import sx.logistica.EnvioDet
+
+model {
+    EnvioDet envioDet
+}
+
+json g.render(envioDet, [excludes:['producto','ventaDet']]){
+  producto {
+    id envioDet.producto.id
+    clave envioDet.producto.clave
+    descripcion envioDet.producto.descripcion
+    kilos envioDet.producto.kilos
+   }
+   ventaDet {
+    id envioDet.ventaDet.id
+    cantidad envioDet.ventaDet.cantidad
+    enviado envioDet.ventaDet.enviado
+   }
+}

@@ -1,0 +1,31 @@
+import sx.logistica.Envio
+
+model {
+    Envio envio
+}
+
+json g.render(envio, [excludes:['partidas','embarque'] ]){
+	if(envio.embarque){
+		embarque {
+	    	id envio.embarque.id
+	    	documento envio.embarque.documento
+	    	salida envio.embarque.salida
+	    	regreso envio.embarque.regreso
+	    	cliente envio.nombre
+	    	chofer {
+	    		id envio.embarque.chofer.id
+	    		nombre envio.embarque.chofer.nombre
+	    	}
+    	}
+
+	    chofer {
+	    	id envio.embarque.chofer.id
+	    	nombre envio.embarque.chofer.nombre
+	    }
+    	retraso envio.embarque.salida
+	}
+	numeroDePartidas envio.partidas.size()
+
+    
+}
+

@@ -1,0 +1,13 @@
+import groovy.transform.Field
+import sx.core.Socio
+
+@Field Socio socio
+
+json g.render(socio, [excludes:['direccionFiscal']]){
+    direccionFiscal g.render(socio.direccionFiscal)
+    if(socio.direccionFiscal) {
+        direccionLabel socio.direccionFiscal.toLabel()
+    }
+
+}
+

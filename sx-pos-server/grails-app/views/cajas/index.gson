@@ -1,0 +1,7 @@
+import sx.cajas.CotizacionCaja
+
+model{
+    Iterable<CotizacionCaja> cotizacionCajaList
+}
+
+json tmpl.cotizacionCaja(cotizacionCajaList ?: [])

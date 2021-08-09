@@ -1,0 +1,9 @@
+import sx.crm.BonificacionMC
+
+model {
+	BonificacionMC bonificacionMC
+}
+
+json g.render(bonificacionMC, [resolveTemplate: false]){
+	disponible bonificacionMC.getDisponible()
+}

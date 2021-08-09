@@ -1,0 +1,57 @@
+import sx.core.Venta
+
+model {
+    Venta venta
+}
+
+json g.render(venta, [excludes:['sucursal','cliente','vendedor','moneda','partidas']]){
+    sucursal {
+        id venta.sucursal.id
+        nombre venta.sucursal.nombre
+        clave venta.sucursal.clave
+    }
+    cliente {
+    	id venta.cliente.id
+    	nombre venta.cliente.nombre
+        telefonos venta.cliente.telefonos
+        cfdiMail venta.cliente.cfdiMail
+        cfdiMailValidado venta.cliente.getCfdiValidado()
+    }
+    vendedor {
+    	id venta.vendedor.id
+    	nombre venta.vendedor.nombres
+    }
+    moneda venta.moneda.currencyCode
+    // envio g.render(venta.envio, [excludes: ['venta']])
+    if(venta.envio) {
+        envio {
+            id venta.envio.id
+            condiciones venta.envio.condiciones
+            direccion g.render(venta.envio.direccion)
+        }
+    }
+    if(venta.cuentaPorCobrar) {
+        cuentaPorCobrar {
+            id venta.cuentaPorCobrar.id
+            documento venta.cuentaPorCobrar.documento
+            tipo venta.cuentaPorCobrar.tipo
+            fecha venta.cuentaPorCobrar.fecha
+            tota venta.cuentaPorCobrar.total
+            pagos venta.cuentaPorCobrar.pagos
+            saldo venta.cuentaPorCobrar.saldo
+            cfdi g.render(venta.cuentaPorCobrar.cfdi)
+        }
+        if(venta.cuentaPorCobrar.cfdi){
+            enviado venta.cuentaPorCobrar.cfdi.enviado
+            cfdiMail venta.cuentaPorCobrar.cfdi.email
+        }
+
+    }
+    if(venta.socio) {
+        socio {
+            id venta.socio.id
+            nombre venta.socio.nombre
+        }
+    }
+
+}

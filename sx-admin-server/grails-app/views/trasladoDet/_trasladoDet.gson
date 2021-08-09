@@ -1,0 +1,13 @@
+import sx.inventario.TrasladoDet
+
+model {
+    TrasladoDet trasladoDet
+}
+
+json g.render(trasladoDet, [excludes:['producto']]){
+    producto {
+        id trasladoDet.producto.id
+        clave trasladoDet.producto.clave
+        descripcion trasladoDet.producto.descripcion
+    }
+}

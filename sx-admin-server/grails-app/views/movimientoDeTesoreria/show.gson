@@ -1,0 +1,16 @@
+import groovy.transform.Field
+import sx.tesoreria.MovimientoDeTesoreria
+
+@Field MovimientoDeTesoreria movimientoDeTesoreria
+
+json g.render(movimientoDeTesoreria, [excludes: ['cuenta']]){
+    cuenta {
+        id movimientoDeTesoreria.cuenta.id
+        descripcion movimientoDeTesoreria.cuenta.descripcion
+    }
+}
+/*
+json g.render(movimientoDeTesoreria, [excludes: ['movimiento']]){
+    movimiento g.render(movimientoDeTesoreria.movimiento)
+}
+*/

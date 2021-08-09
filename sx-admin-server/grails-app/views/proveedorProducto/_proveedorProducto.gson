@@ -1,0 +1,22 @@
+import sx.core.ProveedorProducto
+
+model {
+    ProveedorProducto proveedorProducto
+}
+
+json g.render(proveedorProducto, [excludes: ['proveedor'],deep:true]){
+    /*producto  {
+        id proveedorProducto.id
+        clave proveedorProducto.producto.clave
+        descripcion proveedorProducto.producto.descripcion
+        linea proveedorProducto.producto.linea
+        unidad proveedorProducto.producto.unidad
+    }*/
+}
+/*
+json g.render(compra, [excludes:['moneda','dateCreated','lastUpdated','version']]){
+    proveedor compra.proveedor.nombre
+    sucursal compra.sucursal.nombre
+    modificado compra.lastUpdated.format('yyyy-MM-dd\'T\'HH:mm:ssZ')
+}
+*/

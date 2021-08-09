@@ -1,0 +1,8 @@
+import sx.sat.BancoSat
+
+model {
+	Iterable<BancoSat> bancoSatList
+}
+
+json tmpl.bancoSat(bancoSatList ?: [])
+

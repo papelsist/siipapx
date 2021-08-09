@@ -1,0 +1,15 @@
+import sx.tesoreria.SaldoPorCuentaDeBanco
+
+model {
+	SaldoPorCuentaDeBanco saldoPorCuentaDeBanco
+}
+/*
+json g.render(saldoPorCuentaDeBanco, [excludes:['cuenta', 'lastUpdated']]){
+	cuenta saldoPorCuentaDeBanco.cuenta{
+        id saldoPorCuentaDeBanco.cuenta.id
+        numero saldoPorCuentaDeBanco.cuenta.numero
+        descripcion saldoPorCuentaDeBanco.cuenta.descripcion
+    }toString()
+    modificado saldoPorCuentaDeBanco.lastUpdated.format('yyyy-MM-dd\'T\'HH:mm:ssZ')
+}
+*/

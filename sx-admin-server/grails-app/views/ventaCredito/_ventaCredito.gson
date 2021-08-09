@@ -1,0 +1,20 @@
+import groovy.transform.Field
+import sx.cxc.VentaCredito
+
+@Field VentaCredito ventaCredito
+
+json g.render(ventaCredito, [excludes:['dateCreated','lastUpdated','cobrador','cuentaPorCobrar']]){
+    cliente ventaCredito.cuentaPorCobrar.cliente.id
+    nombre ventaCredito.cuentaPorCobrar.cliente.nombre
+    sucursal ventaCredito.cuentaPorCobrar.sucursal.nombre
+    cobrador {
+        id ventaCredito.cobrador.id
+        nombres ventaCredito.cobrador.nombres
+        sw2 ventaCredito.cobrador.sw2
+    }
+    documento ventaCredito.cuentaPorCobrar.documento
+    fecha ventaCredito.cuentaPorCobrar.fecha
+    saldo ventaCredito.cuentaPorCobrar.saldo
+    atraso ventaCredito.cuentaPorCobrar.atraso
+}
+

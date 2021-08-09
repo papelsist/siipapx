@@ -1,0 +1,13 @@
+import sx.core.Inventario
+
+model{
+    Iterable<Inventario> inventarios
+    Integer inventarioCount
+
+}
+
+json {
+
+    registros tmpl.inventario(inventarios ?: [])
+    inventarioCount inventarioCount
+}
