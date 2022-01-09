@@ -251,7 +251,8 @@ class V33PdfGenerator {
         }
         if (venta.tipo == 'CRE' && venta.cliente.credito) {
             ClienteCredito credito = venta.cliente.credito
-            String cdp = "PLZ: ${credito.plazo} DIAS ${credito.venceFactura ? 'FAC' : 'REV'}D. REV:${credito.diaRevision} D.COB:${credito.diaCobro} VEND: ${venta.cliente?.vendedor?.sw2} COB: ${credito?.cobrador?.sw2}"
+            //String cdp = "PLZ: ${credito.plazo} DIAS ${credito.venceFactura ? 'FAC' : 'REV'}D. REV:${credito.diaRevision} D.COB:${credito.diaCobro} VEND: ${venta.cliente?.vendedor?.sw2} COB: ${credito?.cobrador?.sw2}"
+            String cdp = "*** PLAZO: ${credito.plazo} DIAS VENCIMIENTO FECHA ${credito.venceFactura ? 'FACTURA' : 'REVISION'} ***"
             parametros['CONDICIONES_PAGO'] = cdp
 
         }

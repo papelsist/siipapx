@@ -47,6 +47,8 @@ class Producto {
 
 	BigDecimal precioContado  = 0.0
 
+	BigDecimal precioTarjeta = 0.0
+
 	BigDecimal precioCredito = 0.0
 
 	Date fechaLista

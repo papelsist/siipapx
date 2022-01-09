@@ -95,6 +95,7 @@ class UrlMappings {
         "/api/ventas/cancelarEnvio/$id"( controller: 'venta', action: 'cancelarEnvio', method: 'PUT')
         "/api/ventas/generarValeAutomatico/$id"( controller: 'venta', action: 'generarValeAutomatico')
         "/api/ventas/facturar/$id"( controller: 'venta', action: 'facturar')
+        "/api/ventas/validarSaldoCre/$id"( controller: 'venta', action: 'validarSaldoCre')
         "/api/ventas/cobradas/$id"( controller: 'venta', action: 'cobradas')
         "/api/ventas/timbrar/$id"( controller: 'venta', action: 'timbrar')
         "/api/ventas/cancelar/$id"( controller: 'venta', action: 'cancelar')

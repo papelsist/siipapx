@@ -251,6 +251,13 @@ class VentaController extends RestfulController{
         respond found
     }
 
+    def validarSaldoCre(){
+           Venta pedido = Venta.get(params.id)
+           def resp  = ventaService.validarSaldoCre(pedido)
+           respond resp 
+          
+    }
+
     @Transactional
     def facturar() {
         Venta pedido = Venta.get(params.id)

@@ -258,10 +258,23 @@ class VentaService implements  EventPublisher{
         }
     }
 
+    def validarSaldoCre(Venta pedido){
+        if(pedido.tipo == 'CRE'){
+            def clienteCredito = ClienteCredito.findByCliente(pedido.cliente)
+            def saldo =  clienteCredito.lineaDeCredito - clienteCredito.saldo
+            println pedido.total
+            if(pedido.total > saldo){
+                return [message:"No se Puede Facturar, el importe del pedido (${pedido.total}) es mayor al saldo del cliente (${saldo})".toString(), facturar: false]
+            }else{
+                return [message:"Facturable".toString(), facturar: true]
+            }
+        }
+    }
+
 
     @Publisher
-    def facturar(Venta pedido) {
-        log.debug("Facturando  ${pedido.statusInfo()}")
+    def facturar(Venta pedido) {  
+        log.debug("Facturando  ${pedido.statusInfo()}") 
         assert pedido.cuentaPorCobrar == null, "Pedido${pedido.getFolio()} ya facturado : ${pedido.statusInfo()}"
         pedido = generarCuentaPorCobrar(pedido)
         return pedido
